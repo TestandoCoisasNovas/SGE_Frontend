@@ -1,8 +1,7 @@
-import { MinusIcon, PlusIcon } from "@/components/utils/Icons";
-import { SubSize } from "@/types/types";
-import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import NavbarOptionButtons from "./NavbarOptionButtons";
 
 interface NavbarOptionInterface extends React.PropsWithChildren {
   tittle: string;
@@ -12,21 +11,26 @@ interface NavbarOptionInterface extends React.PropsWithChildren {
 }
 
 export default function NavbarOption(props: NavbarOptionInterface) {
+  const router = useRouter();
+  const page = Array.isArray(router.query.slug) ? router.query.slug.join("/") : "";
+  const querySelected = router.query.slug?.includes(
+    props.tittle
+      .toLowerCase()
+      .replace(" ", "-")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+  );
+
+  useEffect(() => {
+    if (querySelected) {
+      setOpenMenu(true);
+    }
+  }, [querySelected]);
+
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const handleOpenMenu = () => {
     setOpenMenu((prev) => !prev);
   };
-
-  const iconSize =
-    props.subSize === SubSize.one
-      ? 25
-      : props.subSize === SubSize.two
-      ? 20
-      : props.subSize === SubSize.three
-      ? 15
-      : props.subSize === SubSize.four
-      ? 10
-      : 0;
 
   return (
     <div
@@ -34,50 +38,15 @@ export default function NavbarOption(props: NavbarOptionInterface) {
         "flex flex-col w-full justify-start gap-1 tracking-wide overflow-hidden transition-all duration-500"
       )}
     >
-      <div
-        className={twMerge(
-          "flex px-4 py-1 cursor-pointer group transition-all duration-500",
-          props.icon && openMenu && "bg-secondary"
-        )}
-        onClick={handleOpenMenu}
-      >
-        <div
-          className={twMerge(
-            "flex gap-2 items-center",
-            "transition group-hover:scale-[105%] group-active:scale-90",
-            props.subSize === SubSize.one
-              ? "pl-0"
-              : props.subSize === SubSize.two
-              ? "pl-3"
-              : props.subSize === SubSize.three
-              ? "pl-5"
-              : props.subSize === SubSize.four && "pl-7"
-          )}
-        >
-          {props.icon ? (
-            <>
-              <PlusIcon
-                width={iconSize}
-                height={iconSize}
-                className={twMerge("hidden transition fill-foreground", !openMenu && "flex")}
-              />
-              <MinusIcon
-                width={iconSize}
-                height={iconSize}
-                className={twMerge("hidden transition fill-foreground", openMenu && "flex")}
-              />
-              <h1 className={twMerge(props.subSize === SubSize.one && "text-[20px] font-bold")}>{props.tittle}</h1>
-            </>
-          ) : (
-            <Link
-              href={props.href ? props.href : ""}
-              className={twMerge(props.subSize === SubSize.one && "text-[20px]")}
-            >
-              {props.tittle}
-            </Link>
-          )}
-        </div>
-      </div>
+      <NavbarOptionButtons
+        openMenu={openMenu}
+        handleOpenMenu={handleOpenMenu}
+        page={page}
+        tittle={props.tittle}
+        subSize={props.subSize}
+        icon={props.icon}
+        href={props.href}
+      />
       <div
         className={twMerge(
           "flex-col transition-all duration-500 ease-in-out overflow-hidden",
