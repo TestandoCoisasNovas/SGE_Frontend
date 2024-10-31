@@ -7,6 +7,7 @@
   --foreground: #171717;
   --secondary: #003fff;
   --tertiary: #50c878;
+  --extraColor: #65a30d;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +16,7 @@
     --foreground: #ededed;
     --secondary: #003fff;
     --tertiary: #355e3b;
+    --extraColor: #65a30d;
   }
 }
 
@@ -22,6 +24,16 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  input, select, text-area {
+    @apply text-black border-2 border-gray-300 rounded-md p-2 w-full
+    focus:outline-none focus:border-tertiary focus:ring-2 focus:ring-foreground;
+  }
+  select {
+    @apply h-[44px]
+  }
 }
 
 @layer utilities {
