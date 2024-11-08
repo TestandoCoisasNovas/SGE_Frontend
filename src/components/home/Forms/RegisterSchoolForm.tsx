@@ -1,49 +1,53 @@
 import Button from "@/components/utils/Button";
-import { Address, SchoolDataType } from "@/types/types";
+import { Address, Methods, SchoolDataType } from "@/types/types";
 import { useState } from "react";
 import AddressForm from "./AddressForm";
+import { useSchoolData } from "@/context/SchoolDataContext";
 
 export default function RegisterSchoolForm() {
+  const schoolDataContext = useSchoolData();
+
   const [SchoolAddressFormData, setSchoolAddressFormData] = useState<Address>({
-    id: "",
-    endereco: "",
+    rua: "",
     numero: "",
     bairro: "",
+    referencia: "",
     cidade: "",
-    estado: "Piauí",
-    tipoLocalidade: "",
+    estado: "",
+    zonaResidencial: "",
   });
 
   const [SchoolFormData, setSchoolFormData] = useState<SchoolDataType>({
-    id: "",
     inep: "",
-    nome: "",
-    cnpj: "",
+    nomeEscola: "",
+    cnpjEscola: "",
     situacao: "",
     telefone: "",
-    localizacao: SchoolAddressFormData,
+    endereco: SchoolAddressFormData,
   });
 
-  const handleChangeSchoolData = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // CNJP MASK
+  const handleChangeSchoolData = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+    // CNPJ MASK
     if (e.target.name === "cnpj") {
       setSchoolFormData({
         ...SchoolFormData,
-        cnpj: e.target.value
+        cnpjEscola: e.target.value
           .replace(/\D/g, "")
           .replace(/^(\d{2})(\d)/, "$1.$2")
           .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
           .replace(/\.(\d{3})(\d)/, ".$1/$2")
           .replace(/(\d{4})(\d)/, "$1-$2"),
       });
-      // INEP MASK
-    } else if (e.target.name === "inep") {
+    }
+    // INEP MASK
+    else if (e.target.name === "inep") {
       setSchoolFormData({
         ...SchoolFormData,
         inep: e.target.value.replace(/\D/g, ""),
       });
-      // PHONE MASK
-    } else if (e.target.name === "telefone") {
+    }
+    // PHONE MASK
+    else if (e.target.name === "telefone") {
       setSchoolFormData({
         ...SchoolFormData,
         telefone: e.target.value
@@ -52,8 +56,9 @@ export default function RegisterSchoolForm() {
           .replace(/(^\d{2})(\d)/, "($1) $2")
           .replace(/(\d{4,5})(\d{4}$)/, "$1-$2"),
       });
-      // OTHERS
-    } else {
+    }
+    // OTHERS
+    else {
       setSchoolFormData({
         ...SchoolFormData,
         [e.target.name]: e.target.value,
@@ -72,8 +77,20 @@ export default function RegisterSchoolForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Dados enviados:", SchoolFormData);
-    // Lógica para envio dos dados
+    schoolDataContext.handleSubmit(
+      {
+        ...SchoolFormData,
+        endereco: SchoolAddressFormData,
+      },
+      Methods.POST
+    );
+    console.log(
+      "Dados enviados:",
+      JSON.stringify({
+        ...SchoolFormData,
+        endereco: SchoolAddressFormData,
+      })
+    );
   };
 
   return (
@@ -84,14 +101,20 @@ export default function RegisterSchoolForm() {
           {/* BASE DATA SECTION */}
           <div className="flex flex-col p-2">
             <label>Nome</label>
-            <input type="text" name="nome" value={SchoolFormData.nome} onChange={handleChangeSchoolData} required />
+            <input
+              type="text"
+              name="nomeEscola"
+              value={SchoolFormData.nomeEscola}
+              onChange={handleChangeSchoolData}
+              required
+            />
           </div>
           <div className="flex flex-col p-2">
             <label>CNPJ</label>
             <input
               type="text"
               name="cnpj"
-              value={SchoolFormData.cnpj}
+              value={SchoolFormData.cnpjEscola}
               onChange={handleChangeSchoolData}
               minLength={18}
               maxLength={18}
@@ -112,13 +135,13 @@ export default function RegisterSchoolForm() {
           </div>
           <div className="flex flex-col p-2">
             <label>Situação</label>
-            <input
-              type="text"
-              name="situacao"
-              value={SchoolFormData.situacao}
-              onChange={handleChangeSchoolData}
-              required
-            />
+            <select name="situacao" value={SchoolFormData.situacao} onChange={handleChangeSchoolData} required>
+              <option hidden disabled value="">
+                Selecione uma Opção
+              </option>
+              <option>Ativo</option>
+              <option>Inativo</option>
+            </select>
           </div>
           <div className="flex flex-col p-2">
             <label>Telefone</label>

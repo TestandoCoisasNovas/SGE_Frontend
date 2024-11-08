@@ -6,19 +6,21 @@ import NavbarOptionButtons from "./NavbarOptionButtons";
 interface NavbarOptionInterface extends React.PropsWithChildren {
   tittle: string;
   subSize: number;
+  reference?: string;
   icon: boolean;
   href?: string;
 }
 
 export default function NavbarOption(props: NavbarOptionInterface) {
   const router = useRouter();
-  const page = Array.isArray(router.query.slug) ? router.query.slug.join("/") : "";
-  const querySelected = router.query.slug?.includes(
-    props.tittle
-      .toLowerCase()
-      .replace(" ", "-")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
+
+  const querySelected = router.asPath.includes(
+    `${props.reference}/` +
+      props.tittle
+        .toLowerCase()
+        .replace(" ", "-")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
   );
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function NavbarOption(props: NavbarOptionInterface) {
       <NavbarOptionButtons
         openMenu={openMenu}
         handleOpenMenu={handleOpenMenu}
-        page={page}
+        page={router.asPath}
         tittle={props.tittle}
         subSize={props.subSize}
         icon={props.icon}

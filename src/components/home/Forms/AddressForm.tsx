@@ -15,11 +15,11 @@ export default function AddressForm({ SchoolAddressFormData, handleChangeSchoolA
     <>
       {/* ADDRESS SECTION */}
       <div className="flex flex-col p-2">
-        <label>Endereço</label>
+        <label>Logradouro</label>
         <input
           type="string"
-          name="endereco"
-          value={SchoolAddressFormData.endereco}
+          name="rua"
+          value={SchoolAddressFormData.rua}
           onChange={handleChangeSchoolAddressData}
           required
         />
@@ -45,21 +45,36 @@ export default function AddressForm({ SchoolAddressFormData, handleChangeSchoolA
         />
       </div>
       <div className="flex flex-col p-2">
+        <label>Ponto de Referência</label>
+        <input
+          type="string"
+          name="referencia"
+          value={SchoolAddressFormData.referencia}
+          onChange={handleChangeSchoolAddressData}
+        />
+      </div>
+      <div className="flex flex-col p-2">
         <label>Estado</label>
         <select
           name="estado"
           value={SchoolAddressFormData.estado}
           onChange={(e) => {
+            const selectedOption = UFSData?.find((uf) => uf.nome === e.target.value);
+            if (selectedOption) {
+              setSelectedUF(selectedOption.sigla);
+            }
             handleChangeSchoolAddressData(e);
-            setSelectedUF(e.target.value);
           }}
-          disabled
         >
           <option hidden disabled value="">
             Selecione uma Opção
           </option>
           {UFSData?.map((value) => {
-            return <option key={value.id}>{value.nome}</option>;
+            return (
+              <option key={value.id} value={value.nome}>
+                {value.nome}
+              </option>
+            );
           })}
         </select>
       </div>
@@ -67,6 +82,7 @@ export default function AddressForm({ SchoolAddressFormData, handleChangeSchoolA
         <label>Cidade</label>
         <select
           name="cidade"
+          className="max-w-52"
           value={SchoolAddressFormData.cidade}
           onChange={handleChangeSchoolAddressData}
           disabled={selectedUFCities?.length ? false : true}
@@ -83,8 +99,8 @@ export default function AddressForm({ SchoolAddressFormData, handleChangeSchoolA
       <div className="flex flex-col p-2">
         <label>Tipo de Localidade</label>
         <select
-          name="tipoLocalidade"
-          value={SchoolAddressFormData.tipoLocalidade}
+          name="zonaResidencial"
+          value={SchoolAddressFormData.zonaResidencial}
           onChange={handleChangeSchoolAddressData}
           required
         >

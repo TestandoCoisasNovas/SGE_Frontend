@@ -2,8 +2,8 @@ import { Methods, SchoolDataType } from "@/types/types";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 // INTERFACE FOR SUBMITS
-interface InfoSUBMIT {
-  id: string;
+interface InfoSUBMIT extends SchoolDataType  {
+  teste?: string
 }
 
 // CONTEXT CREATED
@@ -43,13 +43,15 @@ export function SchoolDataContextProvider(loteInfos: React.PropsWithChildren) {
   }, [responseCode]);
 
   const handleSubmit = (infos: InfoSUBMIT, methodSelection: Methods) => {
-    fetch(``, {
+    fetch(`http://localhost:8080/escola`, {
       method: methodSelection,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(infos),
     })
       .then((response) => {
         setResponseCode(response.status);
+        console.log("Renderizou o envio");
+        console.log("Resposta do Backend:", response.status);
       })
       .catch((error) => {
         console.log(error);

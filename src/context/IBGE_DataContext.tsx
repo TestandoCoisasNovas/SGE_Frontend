@@ -22,7 +22,7 @@ export const useUFSData = () => {
 // react func do context
 export function UFsDataContextProvider(props: React.PropsWithChildren) {
   const [UFSData, setUFSData] = useState<IBGE_UF_DataType[] | null>(null);
-  const [selectedUF, setSelectedUF] = useState<string | null>("PI");
+  const [selectedUF, setSelectedUF] = useState<string | null>(null);
   const [selectedUFCities, setSelectedUFCities] = useState<IBGE_CITIES_DataType[] | null>(null);
 
   useEffect(() => {
@@ -37,12 +37,9 @@ export function UFsDataContextProvider(props: React.PropsWithChildren) {
   }, []);
 
   useEffect(() => {
-    fetch(
-      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF ? selectedUF : ""}/municipios`,
-      {
-        method: "GET",
-      }
-    )
+    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF ? selectedUF : ""}/municipios`, {
+      method: "GET",
+    })
       .then((res) => res.json())
       .then((data: IBGE_CITIES_DataType[]) => {
         setSelectedUFCities(data);

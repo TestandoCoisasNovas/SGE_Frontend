@@ -5,29 +5,29 @@ export default function Navbar() {
   return (
     <nav className="flex flex-col max-w-[230px] w-full items-start bg-tertiary select-none">
       {/* SIZE ONE - MATRÍCULA */}
-      <NavbarOption tittle="Matrícula Inicial" icon={true} subSize={SubSize.one}>
+      <NavbarOption tittle="Matrícula Inicial" reference="" icon={true} subSize={SubSize.one}>
         {/* SIZE TWO - ESCOLA */}
-        <NavbarOption tittle="Escola" icon={true} subSize={SubSize.two}>
+        <NavbarOption tittle="Escola" reference="matricula-inicial" icon={true} subSize={SubSize.two}>
           {/* SIZE THREE - ESCOLA → OPÇÕES*/}
-          <NavbarOption tittle="Cadastro" icon={true} subSize={SubSize.three}>
+          <NavbarOption tittle="Cadastro" reference="escola" icon={true} subSize={SubSize.three}>
             {/* INSIDE SIZE THREE - ESCOLA -> CADASTRO -> OPÇÕES*/}
             <NavbarOption
               tittle="Identificação"
               icon={false}
               subSize={SubSize.four}
-              href="matricula-inicial/escola/cadastro/identificacao"
+              href="/matricula-inicial/escola/cadastro/identificacao"
             />
             <NavbarOption
               tittle="Caracterização"
               icon={false}
               subSize={SubSize.four}
-              href="matricula-inicial/escola/cadastro/caracterizacao"
+              href="/matricula-inicial/escola/cadastro/caracterizacao"
             />
             <NavbarOption
               tittle="Organização Escolar"
               icon={false}
               subSize={SubSize.four}
-              href="matricula-inicial/escola/cadastro/organizacao-escolar"
+              href="/matricula-inicial/escola/cadastro/organizacao-escolar"
             />
           </NavbarOption>
 
@@ -36,43 +36,63 @@ export default function Navbar() {
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/escola/pesquisar"
+            href="/matricula-inicial/escola/pesquisar"
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/escola/bloquear-acesso"
+            href="/matricula-inicial/escola/bloquear-acesso"
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/escola/desbloquear"
+            href="/matricula-inicial/escola/desbloquear"
           />
         </NavbarOption>
 
         {/* SIZE TWO - GESTOR ESCOLAR */}
         <NavbarOption tittle="Gestor Escolar" icon={true} subSize={SubSize.two}>
           {/* SIZE THREE - GESTOR ESCOLAR -> OPÇÕES */}
-          <NavbarOption tittle="Cadastro" icon={true} subSize={SubSize.three} />
+          <NavbarOption tittle="Cadastro" reference="gestor-escolar" icon={true} subSize={SubSize.three}>
+            {/* INSIDE SIZE THREE - ESCOLA -> CADASTRO -> OPÇÕES*/}
+            <NavbarOption
+              tittle="Identificação"
+              icon={false}
+              subSize={SubSize.four}
+              href="/matricula-inicial/gestor-escolar/cadastro/identificacao"
+            />
+            <NavbarOption
+              tittle="Caracterização"
+              icon={false}
+              subSize={SubSize.four}
+              href="/matricula-inicial/gestor-escolar/cadastro/caracterizacao"
+            />
+            <NavbarOption
+              tittle="Organização Escolar"
+              icon={false}
+              subSize={SubSize.four}
+              href="/matricula-inicial/gestor-escolar/cadastro/organizacao-escolar"
+            />
+          </NavbarOption>
           <NavbarOption
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/gestor-escolar/pesquisar"
+            href="/matricula-inicial/gestor-escolar/pesquisar"
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/gestor-escolar/bloquear-acesso"
+            href="/matricula-inicial/gestor-escolar/bloquear-acesso"
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/gestor-escolar/desbloquear"
+            href="/matricula-inicial/gestor-escolar/desbloquear"
           />
         </NavbarOption>
 
@@ -84,19 +104,19 @@ export default function Navbar() {
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/gestor-escolar/pesquisar"
+            href="/matricula-inicial/gestor-escolar/pesquisar"
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/gestor-escolar/bloquear-acesso"
+            href="/matricula-inicial/gestor-escolar/bloquear-acesso"
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/gestor-escolar/desbloquear"
+            href="/matricula-inicial/gestor-escolar/desbloquear"
           />
         </NavbarOption>
 
@@ -108,19 +128,19 @@ export default function Navbar() {
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/turma/pesquisar"
+            href="/matricula-inicial/turma/pesquisar"
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/turma/boquear-acesso"
+            href="/matricula-inicial/turma/boquear-acesso"
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/turma/desbloquear"
+            href="/matricula-inicial/turma/desbloquear"
           />
         </NavbarOption>
 
@@ -132,19 +152,19 @@ export default function Navbar() {
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/aluno/pesquisar"
+            href="/matricula-inicial/aluno/pesquisar"
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/aluno/bloquear-acesso"
+            href="/matricula-inicial/aluno/bloquear-acesso"
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/aluno/desbloquear"
+            href="/matricula-inicial/aluno/desbloquear"
           />
         </NavbarOption>
 
@@ -156,19 +176,19 @@ export default function Navbar() {
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/profissional-escolar/pesquisar"
+            href="/matricula-inicial/profissional-escolar/pesquisar"
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/profissional-escolar/bloquear-acesso"
+            href="/matricula-inicial/profissional-escolar/bloquear-acesso"
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/profissional-escolar/desbloquear"
+            href="/matricula-inicial/profissional-escolar/desbloquear"
           />
         </NavbarOption>
 
@@ -180,24 +200,24 @@ export default function Navbar() {
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/migracao/pesquisar"
+            href="/matricula-inicial/migracao/pesquisar"
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/migracao/bloquear-acesso"
+            href="/matricula-inicial/migracao/bloquear-acesso"
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="matricula-inicial/migracao/desbloquear"
+            href="/matricula-inicial/migracao/desbloquear"
           />
         </NavbarOption>
 
         {/* SIZE TWO - STANDALONE - MIGRAÇÃO */}
-        <NavbarOption tittle="Relatórios" icon={false} subSize={SubSize.two} href="matricula-inicial/relatorios" />
+        <NavbarOption tittle="Relatórios" icon={false} subSize={SubSize.two} href="/matricula-inicial/relatorios" />
       </NavbarOption>
 
       {/* SIZE ONE - USUÁRIO */}

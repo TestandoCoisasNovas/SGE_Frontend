@@ -60,23 +60,24 @@ export type EmployeeData = {
 };
 
 export type Address = {
-  id: string;
-  endereco: string;
+  id?: string;
+  rua: string;
   numero: string;
   bairro: string;
+  referencia: string;
   cidade: string;
   estado: string;
-  tipoLocalidade: string;
+  zonaResidencial: string;
 };
 
 export type SchoolDataType = {
-  id: string;
+  id?: string;
   inep: string;
-  nome: string;
-  cnpj: string;
+  nomeEscola: string;
+  cnpjEscola: string;
   situacao: string;
   telefone: string;
-  localizacao: Address;
+  endereco: Address;
   responsavel?: EmployeeData;
 };
 

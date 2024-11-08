@@ -5,6 +5,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import ErrorPage from "@/components/utils/ErrorPage";
+import Footer from "@/components/home/Footer";
 
 export default function DynamicSlugPage() {
   const router = useRouter();
@@ -49,19 +50,22 @@ export default function DynamicSlugPage() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <Head>
         <title>SGE Edu</title>
       </Head>
-      <Navbar />
-      <div
-        className={twMerge(
-          "flex flex-col m-auto items-center transform transition-all duration-1000 ease-out",
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
-        )}
-      >
-        {renderContent() ? renderContent() : <ErrorPage />}
+      <div className="flex flex-1">
+        <Navbar />
+        <div
+          className={twMerge(
+            "flex flex-col m-auto items-center transform transition-all duration-1000 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
+          )}
+        >
+          {renderContent() ? renderContent() : <ErrorPage />}
+        </div>
       </div>
+      <Footer />
     </div>
   );
 }
