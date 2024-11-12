@@ -96,3 +96,10 @@ export type IBGE_CITIES_DataType = {
   id: number;
   nome: string;
 };
+
+export type User_Login_DataType = {
+  name: string;
+  email: string;
+  cpf: string;
+  password: string;
+};

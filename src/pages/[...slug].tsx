@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import Navbar from "@/components/home/Navigation/Navbar";
-import RegisterSchoolForm from "@/components/home/Forms/RegisterSchoolForm";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import ErrorPage from "@/components/utils/ErrorPage";
+import RegisterSchoolForm from "@/components/app/Forms/RegisterSchoolForm";
+import Navbar from "@/components/app/Navigation/Navbar";
 import Footer from "@/components/home/Footer";
 
 export default function DynamicSlugPage() {

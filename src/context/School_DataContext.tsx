@@ -1,22 +1,17 @@
 import { Methods, SchoolDataType } from "@/types/types";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-// INTERFACE FOR SUBMITS
-interface InfoSUBMIT extends SchoolDataType  {
-  teste?: string
-}
-
 // CONTEXT CREATED
 type SchoolDataContextType = {
-  handleSubmit: (infos: InfoSUBMIT, methodSelection: Methods) => void;
-  infosReceived: SchoolDataType[] | null;
+  handleSubmitSchool: (infos: SchoolDataType, methodSelection: Methods) => void;
+  infosGET: SchoolDataType[] | null;
   responseCode: number;
   setResponseCode: (value: React.SetStateAction<number>) => void;
 };
 
 export const SchoolDataContext = createContext<SchoolDataContextType>({
-  handleSubmit: () => undefined,
-  infosReceived: null,
+  handleSubmitSchool: () => undefined,
+  infosGET: null,
   responseCode: 0,
   setResponseCode: () => null,
 });
@@ -27,8 +22,8 @@ export const useSchoolData = () => {
 };
 
 // CONTEXT REACT FUNCTION
-export function SchoolDataContextProvider(loteInfos: React.PropsWithChildren) {
-  const [infosReceived, setInfosReceived] = useState<SchoolDataType[] | null>(null);
+export function SchoolDataContextProvider(props: React.PropsWithChildren) {
+  const [infosGET, setInfosGET] = useState<SchoolDataType[] | null>(null);
   const [responseCode, setResponseCode] = useState<number>(0);
 
   useEffect(() => {
@@ -37,12 +32,12 @@ export function SchoolDataContextProvider(loteInfos: React.PropsWithChildren) {
     })
       .then((res) => res.json())
       .then((data: SchoolDataType[]) => {
-        setInfosReceived(data);
+        setInfosGET(data);
       })
       .catch((error) => console.error(error));
   }, [responseCode]);
 
-  const handleSubmit = (infos: InfoSUBMIT, methodSelection: Methods) => {
+  const handleSubmitSchool = (infos: SchoolDataType, methodSelection: Methods) => {
     fetch(`http://localhost:8080/escola`, {
       method: methodSelection,
       headers: { "Content-Type": "application/json" },
@@ -59,8 +54,8 @@ export function SchoolDataContextProvider(loteInfos: React.PropsWithChildren) {
   };
 
   return (
-    <SchoolDataContext.Provider value={{ infosReceived, handleSubmit, responseCode, setResponseCode }}>
-      {loteInfos.children}
+    <SchoolDataContext.Provider value={{ infosGET: infosGET, handleSubmitSchool, responseCode, setResponseCode }}>
+      {props.children}
     </SchoolDataContext.Provider>
   );
 }

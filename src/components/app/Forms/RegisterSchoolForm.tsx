@@ -2,10 +2,10 @@ import Button from "@/components/utils/Button";
 import { Address, Methods, SchoolDataType } from "@/types/types";
 import { useState } from "react";
 import AddressForm from "./AddressForm";
-import { useSchoolData } from "@/context/SchoolDataContext";
+import { useSchoolData } from "@/context/School_DataContext";
 
 export default function RegisterSchoolForm() {
-  const schoolDataContext = useSchoolData();
+  const { handleSubmitSchool } = useSchoolData();
 
   const [SchoolAddressFormData, setSchoolAddressFormData] = useState<Address>({
     rua: "",
@@ -77,7 +77,7 @@ export default function RegisterSchoolForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    schoolDataContext.handleSubmit(
+    handleSubmitSchool(
       {
         ...SchoolFormData,
         endereco: SchoolAddressFormData,
