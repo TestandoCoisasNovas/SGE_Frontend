@@ -1,19 +1,20 @@
 import { useUserLoginData } from "@/context/User_Login_DataContext";
-import { Methods } from "@/types/types";
-import { useState } from "react";
+import { Methods, PageSelector, StatusResponse } from "@/types/types";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import ConfirmationStatus from "../utils/ConfirmationStatus";
+import Loading from "../utils/Loading";
+import Button from "../utils/Button";
+import { useRouter } from "next/router";
 
 export default function Login() {
-  const { handleSubmitUserLogin } = useUserLoginData();
+  const { responseCode, setResponseCode, handleSubmitUserLogin } = useUserLoginData();
+
   const [loginFormData, setLoginFormData] = useState({
-    name: "",
-    email: "",
     cpf: "",
     password: "",
   });
 
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordMatch, setPasswordMatch] = useState(true);
   const [isCpfValid, setIsCpfValid] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,67 +33,38 @@ export default function Login() {
       setIsCpfValid(updatedCpf.length === 14);
       return;
     }
-
-    // PASSWORD CHECKER
-    if (name === "password") {
-      setPasswordMatch(value === confirmPassword);
-    }
-
     setLoginFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setConfirmPassword(value);
-    setPasswordMatch(value === loginFormData.password);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!passwordMatch) {
-      alert("As senhas não coincidem!");
-      return;
-    }
 
     if (!isCpfValid) {
       alert("CPF inválido! Certifique-se de que ele está completo.");
       return;
     }
 
-    // SWITCH FURTHER TO CONTEXT SEND
+    // CONTEXT SEND
+    setResponseCode(StatusResponse.Loading);
     handleSubmitUserLogin(loginFormData, Methods.POST);
-    console.log("Dados Enviados para Login:", JSON.stringify(loginFormData));
   };
+
+  // REDIRECT TO DASHBOARD
+  const router = useRouter();
+  useEffect(() => {
+    if (responseCode === StatusResponse.Success) {
+      router.push(PageSelector.HomePage);
+      setTimeout(() => {
+        setResponseCode(StatusResponse.Null);
+      }, 2000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [responseCode]);
 
   return (
     <div className="flex justify-center items-center bg-tertiary">
       <form onSubmit={handleSubmit} className="p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Nome</label>
-          <input
-            type="text"
-            name="name"
-            value={loginFormData.name}
-            onChange={handleChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={loginFormData.email}
-            onChange={handleChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
-
         <div className="mb-4">
           <label className="block text-sm font-medium">CPF</label>
           <input
@@ -120,25 +92,19 @@ export default function Login() {
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Confirme sua senha</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            className={twMerge(
-              "mt-1 block w-full p-2 border rounded",
-              passwordMatch ? "border-gray-300" : "border-red-500"
-            )}
-            required
-          />
-          {!passwordMatch && <p className="text-red-500 text-sm mt-1">As senhas não coincidem.</p>}
-        </div>
-
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">
-          Entrar
-        </button>
+        <>
+          {responseCode === StatusResponse.Loading ? (
+            <Loading width={30} className="text-xl" />
+          ) : responseCode === StatusResponse.Success || responseCode === StatusResponse.Error ? (
+            <ConfirmationStatus statusResponse={responseCode} />
+          ) : (
+            responseCode === StatusResponse.Null && (
+              <Button type="submit" className="w-full justify-center">
+                Entrar
+              </Button>
+            )
+          )}
+        </>
       </form>
     </div>
   );

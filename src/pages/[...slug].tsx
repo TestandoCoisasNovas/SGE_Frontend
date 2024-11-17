@@ -6,17 +6,19 @@ import ErrorPage from "@/components/utils/ErrorPage";
 import RegisterSchoolForm from "@/components/app/Forms/RegisterSchoolForm";
 import Navbar from "@/components/app/Navigation/Navbar";
 import Footer from "@/components/home/Footer";
+import { PageSelector } from "@/types/types";
 
 export default function DynamicSlugPage() {
   const router = useRouter();
   const pageIdentify = router.query.slug;
 
+  // SHOWUP ANIMATION
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(false);
     const timer = setTimeout(() => setIsVisible(true), 100);
-    // CLEAR THE TIMER AFTER UNMOUNT
+    // Clear the Timer after unmount
     return () => clearTimeout(timer);
   }, [router.asPath]);
 
@@ -24,27 +26,32 @@ export default function DynamicSlugPage() {
     return <div>Carregando...</div>;
   }
 
+  // CONDITIONAL RENDERING PAGES
   const renderContent = () => {
-    if (pageIdentify?.[0] === "matricula-inicial" && pageIdentify[1] === "escola") {
-      if (pageIdentify[2] === "cadastro") {
-        /* cspell: disable-next-line */
-        if (pageIdentify[3] === "identificacao") {
-          return <RegisterSchoolForm />;
+    if (pageIdentify?.[0] === PageSelector.MatriculaInicial) {
+      if (pageIdentify[1] === PageSelector.Escola) {
+        if (pageIdentify[2] === PageSelector.Cadastro) {
           /* cspell: disable-next-line */
-        } else if (pageIdentify[3] === "caracterizacao") {
-          return <p>Você está na página {router.asPath}</p>;
-          /* cspell: disable-next-line */
-        } else if (pageIdentify[3] === "organizacao-escolar") {
-          return <p>Você está na página {router.asPath}</p>;
+          if (pageIdentify[3] === PageSelector.Identificação) {
+            return <RegisterSchoolForm />;
+            /* cspell: disable-next-line */
+          } else if (pageIdentify[3] === PageSelector.Caracterização) {
+            return <p>Você está na página {router.asPath}</p>;
+            /* cspell: disable-next-line */
+          } else if (pageIdentify[3] === PageSelector.OrgEscolar) {
+            return <p>Você está na página {router.asPath}</p>;
+          } else if (pageIdentify[3] === PageSelector.Administrativo) {
+            return <p>Você está na página {router.asPath}</p>;
+          }
+        } else if (pageIdentify[2] === PageSelector.Pesquisar) {
+          return <p>Você está na página de Pesquisar da Matrícula Inicial - Escola</p>;
+        } else if (pageIdentify[2] === PageSelector.BloquearAcesso) {
+          return <p>Você está na página de Bloquear Acesso da Matrícula Inicial - Escola</p>;
+        } else if (pageIdentify[2] === PageSelector.Desbloquear) {
+          return <p>Você está na página de Desbloquear Acesso da Matrícula Inicial - Escola</p>;
         }
-      } else if (pageIdentify[2] === "pesquisar") {
-        return <p>Você está na página de Pesquisar da Matrícula Inicial - Escola</p>;
-      } else if (pageIdentify[2] === "bloquear-acesso") {
-        return <p>Você está na página de Bloquear Acesso da Matrícula Inicial - Escola</p>;
-      } else if (pageIdentify[2] === "desbloquear") {
-        return <p>Você está na página de Desbloquear Acesso da Matrícula Inicial - Escola</p>;
       }
-    } else if (pageIdentify === undefined) {
+    } else if (pageIdentify?.[0] === PageSelector.HomePage) {
       return <p> Página Principal </p>;
     }
   };

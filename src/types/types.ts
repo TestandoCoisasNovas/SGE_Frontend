@@ -1,6 +1,6 @@
 /* cSpell:disable */
 export enum PageSelector {
-  HomePage = "/",
+  HomePage = "pagina-principal",
   MatriculaInicial = "matricula-inicial",
   Escola = "escola",
   GestorEscolar = "gestor-escolar",
@@ -14,6 +14,7 @@ export enum PageSelector {
   Identificação = "identificacao",
   Caracterização = "caracterizacao",
   OrgEscolar = "organizacao-escolar",
+  Administrativo = "administrativo",
 
   Pesquisar = "pesquisar",
   BloquearAcesso = "bloquear-acesso",
@@ -25,6 +26,13 @@ export enum Methods {
   POST = "POST",
   PUT = "PUT",
   DELETE = "DELETE",
+}
+
+export enum StatusResponse {
+  Null = -1,
+  Loading = 0,
+  Success = 200,
+  Error = 400,
 }
 
 export enum SubSize {
@@ -77,6 +85,7 @@ export type SchoolDataType = {
   cnpjEscola: string;
   situacao: string;
   telefone: string;
+  email: string;
   endereco: Address;
   responsavel?: EmployeeData;
 };
@@ -98,8 +107,6 @@ export type IBGE_CITIES_DataType = {
 };
 
 export type User_Login_DataType = {
-  name: string;
-  email: string;
   cpf: string;
   password: string;
 };

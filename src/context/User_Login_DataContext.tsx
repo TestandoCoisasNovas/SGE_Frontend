@@ -1,4 +1,4 @@
-import { Methods, User_Login_DataType } from "@/types/types";
+import { Methods, StatusResponse, User_Login_DataType } from "@/types/types";
 import React, { createContext, useContext, useState } from "react";
 
 // CONTEXT CREATED
@@ -10,7 +10,7 @@ type UserLoginContextType = {
 
 export const UserLoginContext = createContext<UserLoginContextType>({
   handleSubmitUserLogin: () => undefined,
-  responseCode: 0,
+  responseCode: StatusResponse.Null,
   setResponseCode: () => null,
 });
 
@@ -21,20 +21,21 @@ export const useUserLoginData = () => {
 
 // CONTEXT REACT FUNCTION
 export function UserLoginContextProvider(props: React.PropsWithChildren) {
-  const [responseCode, setResponseCode] = useState<number>(0);
+  const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
+  // const [responseData, setResponseData] = useState()
 
   const handleSubmitUserLogin = (infos: User_Login_DataType, methodSelection: Methods) => {
-    fetch(`http://localhost:8080/user`, {
+    fetch(`http://localhost:8080/login`, {
       method: methodSelection,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(infos),
     })
       .then((response) => {
         setResponseCode(response.status);
-        console.log("Renderizou o envio do Login");
-        console.log("Resposta do Backend:", response.status);
+        // setResponseData(response.body)
       })
       .catch((error) => {
+        setTimeout(() => setResponseCode(200), 1000); // DELETE IT
         console.log(error);
       });
   };

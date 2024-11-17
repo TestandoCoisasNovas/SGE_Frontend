@@ -1,13 +1,15 @@
 import Button from "@/components/utils/Button";
-import { Address, Methods, SchoolDataType } from "@/types/types";
-import { useState } from "react";
+import { Address, Methods, SchoolDataType, StatusResponse } from "@/types/types";
+import { useEffect, useState } from "react";
 import AddressForm from "./AddressForm";
 import { useSchoolData } from "@/context/School_DataContext";
+import Loading from "@/components/utils/Loading";
+import ConfirmationStatus from "@/components/utils/ConfirmationStatus";
 
 export default function RegisterSchoolForm() {
-  const { handleSubmitSchool } = useSchoolData();
+  const { handleSubmitSchool, responseCode, setResponseCode } = useSchoolData();
 
-  const [SchoolAddressFormData, setSchoolAddressFormData] = useState<Address>({
+  const InitialSchoolAddressData = {
     rua: "",
     numero: "",
     bairro: "",
@@ -15,16 +17,20 @@ export default function RegisterSchoolForm() {
     cidade: "",
     estado: "",
     zonaResidencial: "",
-  });
+  };
 
-  const [SchoolFormData, setSchoolFormData] = useState<SchoolDataType>({
+  const InitialSchoolData = {
     inep: "",
     nomeEscola: "",
     cnpjEscola: "",
     situacao: "",
     telefone: "",
-    endereco: SchoolAddressFormData,
-  });
+    email: "",
+    endereco: InitialSchoolAddressData,
+  };
+
+  const [SchoolFormData, setSchoolFormData] = useState<SchoolDataType>(InitialSchoolData);
+  const [SchoolAddressFormData, setSchoolAddressFormData] = useState<Address>(InitialSchoolAddressData);
 
   const handleChangeSchoolData = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     // CNPJ MASK
@@ -75,6 +81,7 @@ export default function RegisterSchoolForm() {
     });
   };
 
+  // SUBMIT CONTEXT HANDLE
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSubmitSchool(
@@ -84,20 +91,28 @@ export default function RegisterSchoolForm() {
       },
       Methods.POST
     );
-    console.log(
-      "Dados enviados:",
-      JSON.stringify({
-        ...SchoolFormData,
-        endereco: SchoolAddressFormData,
-      })
-    );
+    setResponseCode(StatusResponse.Loading);
   };
 
+  useEffect(() => {
+    if (responseCode === StatusResponse.Success) {
+      setSchoolFormData(InitialSchoolData);
+      setSchoolAddressFormData(InitialSchoolAddressData);
+      setTimeout(() => {
+        setResponseCode(StatusResponse.Null);
+      }, 5000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [responseCode]);
+
   return (
-    <div className="flex items-center justify-center px-4">
+    <div className="flex items-center justify-center px-4" onClick={() => setResponseCode(StatusResponse.Null)}>
       <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
         <h1 className="text-xl font-bold">INSIRA OS DADOS DA ESCOLA ABAIXO</h1>
-        <div className="flex flex-wrap items-center justify-center gap-3">
+        <fieldset
+          className="flex flex-wrap items-center justify-center gap-3"
+          disabled={responseCode === StatusResponse.Loading ? true : false}
+        >
           {/* BASE DATA SECTION */}
           <div className="flex flex-col p-2">
             <label>Nome</label>
@@ -139,8 +154,8 @@ export default function RegisterSchoolForm() {
               <option hidden disabled value="">
                 Selecione uma Opção
               </option>
-              <option>Ativo</option>
-              <option>Inativo</option>
+              <option value="Ativo">Ativo</option>
+              <option value="Inativo">Inativo</option>
             </select>
           </div>
           <div className="flex flex-col p-2">
@@ -155,12 +170,24 @@ export default function RegisterSchoolForm() {
               required
             />
           </div>
+          <div className="flex flex-col p-2">
+            <label>E-mail</label>
+            <input type="email" name="email" value={SchoolFormData.email} onChange={handleChangeSchoolData} required />
+          </div>
           <AddressForm
             SchoolAddressFormData={SchoolAddressFormData}
             handleChangeSchoolAddressData={handleChangeSchoolAddressData}
           />
+        </fieldset>
+        <div>
+          {responseCode === StatusResponse.Loading ? (
+            <Loading width={40} />
+          ) : responseCode === StatusResponse.Success || responseCode === StatusResponse.Error ? (
+            <ConfirmationStatus statusResponse={responseCode} />
+          ) : (
+            responseCode === StatusResponse.Null && <Button type="submit">Enviar Dados</Button>
+          )}
         </div>
-        <Button type="submit">Enviar Dados</Button>
       </form>
     </div>
   );

@@ -1,5 +1,5 @@
 import NavbarOption from "./NavbarOption";
-import { SubSize } from "@/types/types";
+import { PageSelector, SubSize } from "@/types/types";
 
 export default function Navbar() {
   return (
@@ -7,27 +7,65 @@ export default function Navbar() {
       {/* SIZE ONE - MATRÍCULA */}
       <NavbarOption tittle="Matrícula Inicial" reference="" icon={true} subSize={SubSize.one}>
         {/* SIZE TWO - ESCOLA */}
-        <NavbarOption tittle="Escola" reference="matricula-inicial" icon={true} subSize={SubSize.two}>
+        <NavbarOption tittle="Escola" reference={PageSelector.MatriculaInicial} icon={true} subSize={SubSize.two}>
           {/* SIZE THREE - ESCOLA → OPÇÕES*/}
-          <NavbarOption tittle="Cadastro" reference="escola" icon={true} subSize={SubSize.three}>
+          <NavbarOption tittle="Cadastro" reference={PageSelector.Escola} icon={true} subSize={SubSize.three}>
             {/* INSIDE SIZE THREE - ESCOLA -> CADASTRO -> OPÇÕES*/}
             <NavbarOption
               tittle="Identificação"
               icon={false}
               subSize={SubSize.four}
-              href="/matricula-inicial/escola/cadastro/identificacao"
+              href={
+                PageSelector.MatriculaInicial +
+                "/" +
+                PageSelector.Escola +
+                "/" +
+                PageSelector.Cadastro +
+                "/" +
+                PageSelector.Identificação
+              }
             />
             <NavbarOption
               tittle="Caracterização"
               icon={false}
               subSize={SubSize.four}
-              href="/matricula-inicial/escola/cadastro/caracterizacao"
+              href={
+                PageSelector.MatriculaInicial +
+                "/" +
+                PageSelector.Escola +
+                "/" +
+                PageSelector.Cadastro +
+                "/" +
+                PageSelector.Caracterização
+              }
             />
             <NavbarOption
               tittle="Organização Escolar"
               icon={false}
               subSize={SubSize.four}
-              href="/matricula-inicial/escola/cadastro/organizacao-escolar"
+              href={
+                PageSelector.MatriculaInicial +
+                "/" +
+                PageSelector.Escola +
+                "/" +
+                PageSelector.Cadastro +
+                "/" +
+                PageSelector.OrgEscolar
+              }
+            />
+            <NavbarOption
+              tittle="Administrativo"
+              icon={false}
+              subSize={SubSize.four}
+              href={
+                PageSelector.MatriculaInicial +
+                "/" +
+                PageSelector.Escola +
+                "/" +
+                PageSelector.Cadastro +
+                "/" +
+                PageSelector.Administrativo
+              }
             />
           </NavbarOption>
 
@@ -36,63 +74,87 @@ export default function Navbar() {
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="/matricula-inicial/escola/pesquisar"
+            href={PageSelector.MatriculaInicial + "/" + PageSelector.Escola + "/" + PageSelector.Pesquisar}
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="/matricula-inicial/escola/bloquear-acesso"
+            href={PageSelector.MatriculaInicial + "/" + PageSelector.Escola + "/" + PageSelector.BloquearAcesso}
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="/matricula-inicial/escola/desbloquear"
+            href={PageSelector.MatriculaInicial + "/" + PageSelector.Escola + "/" + PageSelector.Desbloquear}
           />
         </NavbarOption>
 
         {/* SIZE TWO - GESTOR ESCOLAR */}
         <NavbarOption tittle="Gestor Escolar" icon={true} subSize={SubSize.two}>
           {/* SIZE THREE - GESTOR ESCOLAR -> OPÇÕES */}
-          <NavbarOption tittle="Cadastro" reference="gestor-escolar" icon={true} subSize={SubSize.three}>
+          <NavbarOption tittle="Cadastro" reference={PageSelector.GestorEscolar} icon={true} subSize={SubSize.three}>
             {/* INSIDE SIZE THREE - ESCOLA -> CADASTRO -> OPÇÕES*/}
             <NavbarOption
               tittle="Identificação"
               icon={false}
               subSize={SubSize.four}
-              href="/matricula-inicial/gestor-escolar/cadastro/identificacao"
+              href={
+                PageSelector.MatriculaInicial +
+                "/" +
+                PageSelector.GestorEscolar +
+                "/" +
+                PageSelector.Cadastro +
+                "/" +
+                PageSelector.Identificação
+              }
             />
             <NavbarOption
               tittle="Caracterização"
               icon={false}
               subSize={SubSize.four}
-              href="/matricula-inicial/gestor-escolar/cadastro/caracterizacao"
+              href={
+                PageSelector.MatriculaInicial +
+                "/" +
+                PageSelector.GestorEscolar +
+                "/" +
+                PageSelector.Cadastro +
+                "/" +
+                PageSelector.Caracterização
+              }
             />
             <NavbarOption
               tittle="Organização Escolar"
               icon={false}
               subSize={SubSize.four}
-              href="/matricula-inicial/gestor-escolar/cadastro/organizacao-escolar"
+              href={
+                PageSelector.MatriculaInicial +
+                "/" +
+                PageSelector.GestorEscolar +
+                "/" +
+                PageSelector.Cadastro +
+                "/" +
+                PageSelector.OrgEscolar
+              }
             />
           </NavbarOption>
           <NavbarOption
             tittle="Pesquisar"
             icon={false}
             subSize={SubSize.three}
-            href="/matricula-inicial/gestor-escolar/pesquisar"
+            href={PageSelector.MatriculaInicial + "/" + PageSelector.GestorEscolar + "/" + PageSelector.Pesquisar}
           />
           <NavbarOption
             tittle="Bloquear Acesso"
             icon={false}
             subSize={SubSize.three}
-            href="/matricula-inicial/gestor-escolar/bloquear-acesso"
+            href={PageSelector.MatriculaInicial + "/" + PageSelector.GestorEscolar + "/" + PageSelector.BloquearAcesso}
           />
           <NavbarOption
             tittle="Desbloquear"
             icon={false}
             subSize={SubSize.three}
-            href="/matricula-inicial/gestor-escolar/desbloquear"
+            href={PageSelector.MatriculaInicial + "/" + PageSelector.GestorEscolar + "/" + PageSelector.Desbloquear}
           />
         </NavbarOption>
 

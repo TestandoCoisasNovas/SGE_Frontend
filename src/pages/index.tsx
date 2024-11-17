@@ -8,12 +8,13 @@ import { twMerge } from "tailwind-merge";
 export default function Home() {
   const router = useRouter();
 
+  // SHOWUP ANIMATION
   const [isVisible, setIsVisible] = useState(false);
-
+  
   useEffect(() => {
     setIsVisible(false);
     const timer = setTimeout(() => setIsVisible(true), 100);
-    // CLEAR THE TIMER AFTER UNMOUNT
+    // Clear the Timer after unmount
     return () => clearTimeout(timer);
   }, [router.asPath]);
 

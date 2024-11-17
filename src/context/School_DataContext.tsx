@@ -1,4 +1,4 @@
-import { Methods, SchoolDataType } from "@/types/types";
+import { Methods, SchoolDataType, StatusResponse } from "@/types/types";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 // CONTEXT CREATED
@@ -7,13 +7,17 @@ type SchoolDataContextType = {
   infosGET: SchoolDataType[] | null;
   responseCode: number;
   setResponseCode: (value: React.SetStateAction<number>) => void;
+  isDataSended: boolean;
+  setIsDataSended: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const SchoolDataContext = createContext<SchoolDataContextType>({
   handleSubmitSchool: () => undefined,
   infosGET: null,
-  responseCode: 0,
+  responseCode: StatusResponse.Null,
   setResponseCode: () => null,
+  isDataSended: false,
+  setIsDataSended: () => undefined,
 });
 
 // useContext CREATED
@@ -24,7 +28,8 @@ export const useSchoolData = () => {
 // CONTEXT REACT FUNCTION
 export function SchoolDataContextProvider(props: React.PropsWithChildren) {
   const [infosGET, setInfosGET] = useState<SchoolDataType[] | null>(null);
-  const [responseCode, setResponseCode] = useState<number>(0);
+  const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
+  const [isDataSended, setIsDataSended] = useState<boolean>(false);
 
   useEffect(() => {
     fetch(``, {
@@ -45,16 +50,18 @@ export function SchoolDataContextProvider(props: React.PropsWithChildren) {
     })
       .then((response) => {
         setResponseCode(response.status);
-        console.log("Renderizou o envio");
-        console.log("Resposta do Backend:", response.status);
       })
       .catch((error) => {
+        setIsDataSended(true); // INSERT IN .then
+        setTimeout(() => setResponseCode(200), 1000); // DELETE IT
         console.log(error);
       });
   };
 
   return (
-    <SchoolDataContext.Provider value={{ infosGET: infosGET, handleSubmitSchool, responseCode, setResponseCode }}>
+    <SchoolDataContext.Provider
+      value={{ infosGET, handleSubmitSchool, responseCode, setResponseCode, isDataSended, setIsDataSended }}
+    >
       {props.children}
     </SchoolDataContext.Provider>
   );
