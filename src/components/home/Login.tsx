@@ -20,7 +20,7 @@ export default function Login() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    // CPF MASK CHANGER
+    // CPF MASK
     if (name === "cpf") {
       const updatedCpf = value
         .replace(/\D/g, "")

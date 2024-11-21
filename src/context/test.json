@@ -1,0 +1,86 @@
+[
+  {
+    "id": "24d0b64b-4370-41cb-95a3-1a63f4265ead",
+    "inep": "11111111",
+    "nomeEscola": "teste novo final",
+    "cnpjEscola": "11.111.111/1111-11",
+    "situacao": "Ativo",
+    "email": "asdasd@gmail.com",
+    "telefone": "",
+    "endereco": {
+      "id": "2edf3ecf-f577-4b4b-b24f-ffec0bc14003",
+      "numero": "141241",
+      "rua": "teste",
+      "referencia": "teste",
+      "bairro": "Centro",
+      "cidade": "Cocal",
+      "estado": "Piauí",
+      "zonaResidencial": "Rural"
+    },
+    "diretorResponsavel": null,
+    "professores": []
+  },
+  {
+    "id": "7a9b3495-25df-4266-b5bd-828e0246c9e0",
+    "inep": "11223344",
+    "nomeEscola": "Unidade Escolar Francisco Raimundo Fontenele",
+    "cnpjEscola": "11.111.111/0001-11",
+    "situacao": "Ativo",
+    "email": "asdasd@gmail.com",
+    "telefone": "",
+    "endereco": {
+      "id": "0264c078-43a8-4616-8cae-691fb95ba68e",
+      "numero": "110",
+      "rua": "Conjunto José da cunha Frota Q-02 C-",
+      "referencia": "em frente a praça",
+      "bairro": "N. S. de Fatima",
+      "cidade": "Cocal",
+      "estado": "Piauí",
+      "zonaResidencial": "Urbana"
+    },
+    "diretorResponsavel": null,
+    "professores": [""]
+  },
+  {
+    "id": "8c3f767b-395f-4c43-a8d8-668c7240873a",
+    "inep": "11111111",
+    "nomeEscola": "teste",
+    "cnpjEscola": "11.111.111/1111-11",
+    "situacao": "Ativo",
+    "email": "asdasd@gmail.com",
+    "telefone": "",
+    "endereco": {
+      "id": "8175c22b-c728-455f-8cc9-5e73c760495d",
+      "numero": "141241",
+      "rua": "teste",
+      "referencia": "teste",
+      "bairro": "Centro",
+      "cidade": "Cocal",
+      "estado": "Piauí",
+      "zonaResidencial": "Rural"
+    },
+    "diretorResponsavel": null,
+    "professores": [""]
+  },
+  {
+    "id": "a0b5a68b-df9f-4f4a-80d5-7352086bbf11",
+    "inep": "22310610",
+    "nomeEscola": "Unidade Escolar Jose Basson",
+    "cnpjEscola": "22.222.222/0001-22",
+    "situacao": "Ativo",
+    "email": "asdasd@gmail.com",
+    "telefone": "",
+    "endereco": {
+      "id": "bc79273d-9007-42f9-bb10-331db1f7a5e4",
+      "numero": "80",
+      "rua": "Rua Olavo Bilac",
+      "referencia": "Escola José Basson",
+      "bairro": "Centro",
+      "cidade": "Cocal",
+      "estado": "Piauí",
+      "zonaResidencial": "Urbana"
+    },
+    "diretorResponsavel": null,
+    "professores": [""]
+  }
+]

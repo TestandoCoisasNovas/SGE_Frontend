@@ -35,6 +35,11 @@ export enum StatusResponse {
   Error = 400,
 }
 
+export enum Endpoint {
+  Escola = "escola",
+  Diretor = "diretor",
+}
+
 export enum SubSize {
   one = 0,
   two = 3,
@@ -42,7 +47,7 @@ export enum SubSize {
   four = 7,
 }
 
-export type EmployeeData = {
+export type Worker = {
   id: string;
   nome: string;
   rg: string;
@@ -51,7 +56,10 @@ export type EmployeeData = {
   nomeMae: string;
   nomePai: string;
   telefone: string;
+  email: string;
+
   localizacao: Address;
+
   estadoCivil: string;
   nomeConjuge: string;
   foneConjuge: string;
@@ -64,8 +72,15 @@ export type EmployeeData = {
   dataRecebimento: string;
   escolaridade: string;
   curso: string;
-  escola: string;
+
+  escola: SchoolDataType;
 };
+
+export interface Managers extends Worker {
+  cargo: string;
+  portaria: string;
+  password: string;
+}
 
 export type Address = {
   id?: string;
@@ -86,8 +101,10 @@ export type SchoolDataType = {
   situacao: string;
   telefone: string;
   email: string;
+
   endereco: Address;
-  responsavel?: EmployeeData;
+  diretorResponsavel?: Managers | null;
+  professores?: string[];
 };
 
 export type IBGE_UF_DataType = {

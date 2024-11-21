@@ -3,10 +3,11 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import ErrorPage from "@/components/utils/ErrorPage";
-import RegisterSchoolForm from "@/components/app/Forms/RegisterSchoolForm";
+import RegisterSchool from "@/components/app/Forms/RegisterSchool";
 import Navbar from "@/components/app/Navigation/Navbar";
 import Footer from "@/components/home/Footer";
 import { PageSelector } from "@/types/types";
+import RegisterManager from "@/components/app/Forms/RegisterManagers";
 
 export default function DynamicSlugPage() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function DynamicSlugPage() {
         if (pageIdentify[2] === PageSelector.Cadastro) {
           /* cspell: disable-next-line */
           if (pageIdentify[3] === PageSelector.Identificação) {
-            return <RegisterSchoolForm />;
+            return <RegisterSchool />;
             /* cspell: disable-next-line */
           } else if (pageIdentify[3] === PageSelector.Caracterização) {
             return <p>Você está na página {router.asPath}</p>;
@@ -41,7 +42,7 @@ export default function DynamicSlugPage() {
           } else if (pageIdentify[3] === PageSelector.OrgEscolar) {
             return <p>Você está na página {router.asPath}</p>;
           } else if (pageIdentify[3] === PageSelector.Administrativo) {
-            return <p>Você está na página {router.asPath}</p>;
+            return <RegisterManager />;
           }
         } else if (pageIdentify[2] === PageSelector.Pesquisar) {
           return <p>Você está na página de Pesquisar da Matrícula Inicial - Escola</p>;

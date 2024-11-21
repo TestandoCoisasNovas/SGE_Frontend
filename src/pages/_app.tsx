@@ -1,4 +1,4 @@
-import { SchoolDataContextProvider } from "@/context/School_DataContext";
+import { DataBaseContextProvider } from "@/context/DB_DataContext";
 import { UFsDataContextProvider } from "@/context/IBGE_DataContext";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
@@ -8,9 +8,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserLoginContextProvider>
       <UFsDataContextProvider>
-        <SchoolDataContextProvider>
+        <DataBaseContextProvider>
           <Component {...pageProps} />
-        </SchoolDataContextProvider>
+        </DataBaseContextProvider>
       </UFsDataContextProvider>
     </UserLoginContextProvider>
   );

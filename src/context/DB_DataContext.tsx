@@ -1,9 +1,10 @@
-import { Methods, SchoolDataType, StatusResponse } from "@/types/types";
+import { Managers, Methods, SchoolDataType, StatusResponse } from "@/types/types";
 import React, { createContext, useContext, useState, useEffect } from "react";
+import test from "@/context/test.json";
 
 // CONTEXT CREATED
-type SchoolDataContextType = {
-  handleSubmitSchool: (infos: SchoolDataType, methodSelection: Methods) => void;
+type DataBaseContextType = {
+  handleSubmitDataBase: (infos: SchoolDataType | Managers, methodSelection: Methods, endpoint: string) => void;
   infosGET: SchoolDataType[] | null;
   responseCode: number;
   setResponseCode: (value: React.SetStateAction<number>) => void;
@@ -11,8 +12,8 @@ type SchoolDataContextType = {
   setIsDataSended: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const SchoolDataContext = createContext<SchoolDataContextType>({
-  handleSubmitSchool: () => undefined,
+export const DataBaseContext = createContext<DataBaseContextType>({
+  handleSubmitDataBase: () => undefined,
   infosGET: null,
   responseCode: StatusResponse.Null,
   setResponseCode: () => null,
@@ -21,48 +22,53 @@ export const SchoolDataContext = createContext<SchoolDataContextType>({
 });
 
 // useContext CREATED
-export const useSchoolData = () => {
-  return useContext(SchoolDataContext);
+export const useDataBase = () => {
+  return useContext(DataBaseContext);
 };
 
 // CONTEXT REACT FUNCTION
-export function SchoolDataContextProvider(props: React.PropsWithChildren) {
-  const [infosGET, setInfosGET] = useState<SchoolDataType[] | null>(null);
+export function DataBaseContextProvider(props: React.PropsWithChildren) {
+  const [infosGET, setInfosGET] = useState<SchoolDataType[] | null>(test);
   const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
 
   useEffect(() => {
+    // GET - INSERIR O LOCALHOST AQUI EM FETCH
     fetch(``, {
       method: "GET",
     })
       .then((res) => res.json())
       .then((data: SchoolDataType[]) => {
+        console.log(data);
         setInfosGET(data);
       })
       .catch((error) => console.error(error));
   }, [responseCode]);
 
-  const handleSubmitSchool = (infos: SchoolDataType, methodSelection: Methods) => {
-    fetch(`http://localhost:8080/escola`, {
+  // DEMAIS FUNÇÕES 
+  const handleSubmitDataBase = (infos: SchoolDataType | Managers, methodSelection: Methods, endpoint: string) => {
+    fetch(`http://localhost:8080/${endpoint}`, {
       method: methodSelection,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(infos),
     })
       .then((response) => {
         setResponseCode(response.status);
+        setIsDataSended(true);
       })
       .catch((error) => {
-        setIsDataSended(true); // INSERT IN .then
+        setIsDataSended(true); // DELETE IT
         setTimeout(() => setResponseCode(200), 1000); // DELETE IT
+        console.log(infos);
         console.log(error);
       });
   };
 
   return (
-    <SchoolDataContext.Provider
-      value={{ infosGET, handleSubmitSchool, responseCode, setResponseCode, isDataSended, setIsDataSended }}
+    <DataBaseContext.Provider
+      value={{ infosGET, handleSubmitDataBase, responseCode, setResponseCode, isDataSended, setIsDataSended }}
     >
       {props.children}
-    </SchoolDataContext.Provider>
+    </DataBaseContext.Provider>
   );
 }

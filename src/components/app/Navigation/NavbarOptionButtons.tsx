@@ -70,7 +70,7 @@ export default function NavbarOptionButtons(props: NavbarOptionButtonsInterface)
         <Link
           className={twMerge(
             "flex px-4 py-1 cursor-pointer transition-all hover:scale-[105%] active:scale-90",
-            props.href === props.page && "text-tertiary bg-foreground"
+            "/" + props.href === props.page && "text-tertiary bg-foreground"
           )}
           href={props.href ? props.href : ""}
         >
