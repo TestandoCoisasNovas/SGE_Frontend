@@ -13,7 +13,6 @@ export default function AddressForm({ addressData, handleAddressData }: AddressF
     <div className="flex flex-col w-full items-center">
       <h1 className="text-xl font-bold">INSIRA O ENDEREÇO</h1>
       <div className="flex flex-wrap items-center justify-center">
-        {/* ADDRESS SECTION */}
         <div className="flex flex-col p-2">
           <label>Logradouro</label>
           <input type="string" name="rua" value={addressData.rua} onChange={handleAddressData} required />
@@ -75,12 +74,7 @@ export default function AddressForm({ addressData, handleAddressData }: AddressF
         </div>
         <div className="flex flex-col p-2">
           <label>Tipo de Localidade</label>
-          <select
-            name="zonaResidencial"
-            value={addressData.zonaResidencial}
-            onChange={handleAddressData}
-            required
-          >
+          <select name="zonaResidencial" value={addressData.zonaResidencial} onChange={handleAddressData} required>
             <option hidden disabled value="">
               Selecione uma Opção
             </option>

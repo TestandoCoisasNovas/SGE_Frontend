@@ -20,7 +20,7 @@ export default function Login() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    // CPF MASK
+    // CPF Mask
     if (name === "cpf") {
       const updatedCpf = value
         .replace(/\D/g, "")
@@ -44,12 +44,12 @@ export default function Login() {
       return;
     }
 
-    // CONTEXT SEND
+    // Context Send - Handle Submit
     setResponseCode(StatusResponse.Loading);
     handleSubmitUserLogin(loginFormData, Methods.POST);
   };
 
-  // REDIRECT TO DASHBOARD
+  // Redirect to Dashboard IF SUCCESS LOGGED IN
   const router = useRouter();
   useEffect(() => {
     if (responseCode === StatusResponse.Success) {

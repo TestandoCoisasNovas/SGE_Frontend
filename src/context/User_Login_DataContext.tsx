@@ -37,6 +37,7 @@ export function UserLoginContextProvider(props: React.PropsWithChildren) {
     return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
   };
 
+  // Primary Handle Submit 
   const handleSubmitUserLogin = async (infos: User_Login_DataType, methodSelection: Methods) => {
     try {
       const hashedPassword = await generateSHA256(infos.password);
@@ -50,10 +51,10 @@ export function UserLoginContextProvider(props: React.PropsWithChildren) {
       });
 
       setResponseCode(response.status);
-      // setResponseData(response.body)
+      // setResponseData(response.body);
     } catch (error) {
-      setTimeout(() => setResponseCode(200), 1000); // DELETE IT LATER
-      // setResponseCode(StatusResponse.Error)
+      // setTimeout(() => setResponseCode(200), 1000); // DELETE IT LATER
+      setResponseCode(StatusResponse.Error);
       console.error("Erro durante a requisição:", error);
     }
   };

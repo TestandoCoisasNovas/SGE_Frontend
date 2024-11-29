@@ -44,7 +44,7 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
       .catch((error) => console.error(error));
   }, [responseCode]);
 
-  // DEMAIS FUNÇÕES
+  // Primary Handle Submit 
   const handleSubmitDataBase = (infos: SchoolDataType | Managers, methodSelection: Methods, endpoint: string) => {
     fetch(`http://localhost:8080/${endpoint}`, {
       method: methodSelection,

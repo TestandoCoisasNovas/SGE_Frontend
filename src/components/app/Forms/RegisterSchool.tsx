@@ -15,7 +15,7 @@ export default function RegisterSchool() {
   const [SchoolAddress, setSchoolAddress] = useState<Address>(InitialAddressData);
 
   const handleChangeSchoolData = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    // CNPJ MASK
+    // CNPJ Mask
     if (e.target.name === "cnpj") {
       setSchoolFormData({
         ...SchoolFormData,
@@ -27,14 +27,14 @@ export default function RegisterSchool() {
           .replace(/(\d{4})(\d)/, "$1-$2"),
       });
     }
-    // INEP MASK
+    // INEP Mask
     else if (e.target.name === "inep") {
       setSchoolFormData({
         ...SchoolFormData,
         inep: e.target.value.replace(/\D/g, ""),
       });
     }
-    // PHONE MASK
+    // PHONE Mask
     else if (e.target.name === "telefone") {
       setSchoolFormData({
         ...SchoolFormData,
@@ -45,7 +45,7 @@ export default function RegisterSchool() {
           .replace(/(\d{4,5})(\d{4}$)/, "$1-$2"),
       });
     }
-    // OTHERS
+    // Others
     else {
       setSchoolFormData({
         ...SchoolFormData,
@@ -54,7 +54,7 @@ export default function RegisterSchool() {
     }
   };
 
-  // ADDRESS HANDLER
+  // Address Handler
   const handleSchoolAddressFormData = (
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
   ) => {
