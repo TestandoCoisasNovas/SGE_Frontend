@@ -1,5 +1,6 @@
-// cSpell:disable
-// NO OBJECT INSIDE OBJECT SECTION
+// cSpell: disable
+// ------ NO OBJECTS INSIDE ------
+// INITIAL ADDRESS DATA
 export const InitialAddressData = {
   rua: "",
   numero: "",
@@ -10,41 +11,31 @@ export const InitialAddressData = {
   zonaResidencial: "",
 };
 
-const InitialGestorData = {
-  cargo: "",
-  password: "",
-  portaria: "",
-};
-
-// OBJECT INSIDE OBJECT SECTION
-export const InitialSchoolData = {
-  inep: "",
-  nomeEscola: "",
-  cnpjEscola: "",
-  situacao: "",
-  telefone: "",
-  email: "",
-  endereco: InitialAddressData,
-};
-
-export const InitialWorkerData = {
-  id: "",
+// ------ OBJECTS INSIDE OBJECTS ------
+// INITIAL INDIVIDUAL (PESSOA) DATA
+export const InitialIndividualData = {
   nome: "",
-  rg: "",
+  telefone: "",
   cpf: "",
-  dataNascimento: "",
+  rg: "",
   nomeMae: "",
   nomePai: "",
-  telefone: "",
+  dataNascimento: "",
   email: "",
 
-  localizacao: InitialAddressData,
+  endereco: InitialAddressData,
 
   estadoCivil: "",
   nomeConjuge: "",
   foneConjuge: "",
-  dependentes: false,
+};
+
+// INITIAL EMPLOYEE (FUNCIONARIO) DATA
+export const InitialEmployeeData = {
+  ...InitialIndividualData,
   funcao: "",
+  cargaHoraria: "",
+  horarios: [""],
   tipoVinculo: "",
   dataAdmissao: "",
   localTrabalho: "",
@@ -52,7 +43,41 @@ export const InitialWorkerData = {
   dataRecebimento: "",
   escolaridade: "",
   curso: "",
+};
 
+// INITIAL SCHOOL DATA
+export const InitialSchoolData = {
+  inep: "",
+  nomeEscola: "",
+  cnpjEscola: "",
+  situacao: "",
+  telefone: "",
+  email: "",
+
+  endereco: InitialAddressData,
+  diretorResponsavel: { id: "", cpf: "" },
+  professores: [""],
+};
+
+// INITIAL MANAGERS (DIRETORES/SECRETARIOS) DATA
+export const InitialManagersData = {
+  ...InitialEmployeeData,
+  cargo: "",
+  portaria: "",
+  password: "",
   escola: InitialSchoolData,
-  ...InitialGestorData,
+};
+
+// INITIAL SCHOOL STRUCTURE (ESTRUTURA FISICA) DATA
+export const InitialSchoolStructure = {
+  escola: InitialSchoolData,
+  predioProprio: true,
+  qtdSalas: 0,
+  salasImprovisadas: false,
+  qtdSalasImprovisadas: 0,
+  horarios: [""],
+  diretor: InitialManagersData,
+  // turmas:
+  // professores:
+  // financeiro:
 };

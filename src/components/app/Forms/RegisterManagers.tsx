@@ -1,19 +1,19 @@
 import { useDataBase } from "@/context/DB_DataContext";
 import { Address, Endpoint, Managers, Methods, StatusResponse } from "@/types/types";
-import AddressForm from "./AddressForm";
+import AddressForm from "../FormsTemplates/AddressForm";
 import { useState } from "react";
-import { InitialAddressData, InitialWorkerData } from "@/types/constValues";
+import { InitialAddressData, InitialManagersData } from "@/types/constValues";
 import Loading from "@/components/utils/Loading";
 import ConfirmationStatus from "@/components/utils/ConfirmationStatus";
 import Button from "@/components/utils/Button";
-import ManagersForm from "./ManagersForm";
+import ManagersForm from "../FormsTemplates/ManagersForm";
 import SchoolSearcher from "../Search/SchoolSearcher";
 
 export default function RegisterManager() {
   const { infosGET, handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
 
-  // ADMIN STATE AND HANDLER
-  const [ManagerData, setAdminData] = useState<Managers>(InitialWorkerData);
+  // Admin State and Handler
+  const [ManagerData, setAdminData] = useState<Managers>(InitialManagersData);
   const [IsSchoolSelected, setIsSchoolSelected] = useState<boolean>(false);
 
   const [isCpfValid, setIsCpfValid] = useState(false);
@@ -40,7 +40,7 @@ export default function RegisterManager() {
       });
       setIsSchoolSelected(true);
     }
-    // PHONE MASK
+    // PHONE Mask
     else if (name === "telefone") {
       setAdminData({
         ...ManagerData,
@@ -51,7 +51,7 @@ export default function RegisterManager() {
           .replace(/(\d{4,5})(\d{4}$)/, "$1-$2"),
       });
     }
-    // CPF MASK
+    // CPF Mask
     else if (name === "cpf") {
       const updatedCpf = value
         .replace(/\D/g, "")
@@ -71,7 +71,7 @@ export default function RegisterManager() {
     }
   };
 
-  // ADDRESS STATE AND HANDLER
+  // Address State and Handler
   const [AdminAddress, setAdminAddress] = useState<Address>(InitialAddressData);
   const handleAdminAddress = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     setAdminAddress({
@@ -80,8 +80,21 @@ export default function RegisterManager() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const generateSHA256 = async (messageReceived: string) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(messageReceived);
+
+    // Create Hash SHA-256
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+
+    // Convert the Hash Created to Hexadecimal string
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!IsSchoolSelected) {
       alert("Selecione uma Escola! As opções abaixo serão desbloqueadas assim que uma escola selecionada.");
       return;
@@ -90,14 +103,21 @@ export default function RegisterManager() {
       return;
     }
 
+    // Select only 6 first cpf numbers and generate SHA-256 hash
+    const password = ManagerData.cpf.match(/\d{1,6}/)?.[0] || "";
+    const hashedPassword = await generateSHA256(password);
+
+    // Submit Handler for data, with swapped infos
     handleSubmitDataBase(
       {
         ...ManagerData,
         endereco: AdminAddress,
+        password: hashedPassword,
       },
       Methods.POST,
       Endpoint.Diretor
     );
+    
     setResponseCode(StatusResponse.Loading);
   };
 
@@ -113,8 +133,8 @@ export default function RegisterManager() {
 
           {/* DIRETOR/SECRETARIO DATA SECTION */}
           <fieldset className="flex flex-col items-center justify-center gap-10" disabled={!IsSchoolSelected}>
-            <ManagersForm AdminData={ManagerData} handleAdminData={handleManagerData} />
-            <AddressForm AddressFormData={AdminAddress} handleAddressFormData={handleAdminAddress} />
+            <ManagersForm managerData={ManagerData} handleManagerData={handleManagerData} />
+            <AddressForm addressData={AdminAddress} handleAddressData={handleAdminAddress} />
           </fieldset>
         </fieldset>
 

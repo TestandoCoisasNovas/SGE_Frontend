@@ -9,7 +9,7 @@ export default function ConfirmationStatus(props: ConfirmationStatusInterface) {
   return (
     <h1
       className={twMerge(
-        "text-white p-3",
+        "text-white p-3 text-center",
         props.statusResponse === StatusResponse.Success && "text-green-500",
         props.statusResponse === StatusResponse.Error && "text-red-500"
       )}

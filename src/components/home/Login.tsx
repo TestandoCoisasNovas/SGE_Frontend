@@ -62,8 +62,8 @@ export default function Login() {
   }, [responseCode]);
 
   return (
-    <div className="flex justify-center items-center bg-tertiary">
-      <form onSubmit={handleSubmit} className="p-8 rounded shadow-md w-full max-w-md">
+    <div className="flex justify-center items-center bg-tertiary max-w-[277px]">
+      <form onSubmit={handleSubmit} className="px-8 py-5 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium">CPF</label>

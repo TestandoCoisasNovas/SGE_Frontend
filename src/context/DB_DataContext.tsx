@@ -34,18 +34,18 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
 
   useEffect(() => {
     // GET - INSERIR O LOCALHOST AQUI EM FETCH
-    fetch(``, {
+    fetch(`http://281-103-756.local:8080/escola/get`, {
       method: "GET",
+      headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((data: SchoolDataType[]) => {
-        console.log(data);
         setInfosGET(data);
       })
       .catch((error) => console.error(error));
   }, [responseCode]);
 
-  // DEMAIS FUNÇÕES 
+  // DEMAIS FUNÇÕES
   const handleSubmitDataBase = (infos: SchoolDataType | Managers, methodSelection: Methods, endpoint: string) => {
     fetch(`http://localhost:8080/${endpoint}`, {
       method: methodSelection,
@@ -57,9 +57,9 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
         setIsDataSended(true);
       })
       .catch((error) => {
-        setIsDataSended(true); // DELETE IT
-        setTimeout(() => setResponseCode(200), 1000); // DELETE IT
-        console.log(infos);
+        // setIsDataSended(true); // DELETE IT
+        // setTimeout(() => setResponseCode(200), 1000); // DELETE IT
+        // console.log(infos);
         console.log(error);
       });
   };

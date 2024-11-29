@@ -47,24 +47,73 @@ export enum SubSize {
   four = 7,
 }
 
-export type Worker = {
-  id: string;
+export type Individual = {
+  id?: string;
   nome: string;
-  rg: string;
+  telefone: string;
+  email: string;
   cpf: string;
+  rg: string;
   dataNascimento: string;
   nomeMae: string;
   nomePai: string;
-  telefone: string;
-  email: string;
 
-  localizacao: Address;
+  endereco: Address;
 
   estadoCivil: string;
   nomeConjuge: string;
   foneConjuge: string;
-  dependentes: boolean;
+};
+
+// export interface Student extends Individual {
+//   certidao: Certify;
+//   notas: Nota[];
+//   turma: SchoolClass;
+// }
+// interface Certify {
+//   tipoCertidao: string;
+//   ufCertidao: string;
+//   cidade: string;
+//   cartorio: string;
+//   livro: string;
+//   folha: string;
+//   certidao: string;
+//   dataEmissao: string;
+// }
+
+// interface SchoolClass {
+//   nome: string;
+//   turno: string;
+//   ano: Ano;
+//   alunos: Student[];
+//   professores: Teacher[];
+// }
+// interface Nota {
+//   nota: number;
+//   mesReferencia: string;
+//   aluno: Student;
+//   disciplina: Discipline;
+// }
+// interface Discipline {
+//   descricao: string;
+//   cargaHoraria: number;
+//   notas: Nota[];
+//   professores: Teacher[];
+// }
+// interface Ano {
+//   descricao: string;
+//   turma: SchoolClass;
+// }
+// interface Teacher extends Employee {
+//   escolas: SchoolDataType[];
+//   disciplinas: Discipline[];
+//   turmas: SchoolClass[];
+// }
+
+export interface Employee extends Individual {
   funcao: string;
+  cargaHoraria: string;
+  horarios: string[];
   tipoVinculo: string;
   dataAdmissao: string;
   localTrabalho: string;
@@ -72,14 +121,13 @@ export type Worker = {
   dataRecebimento: string;
   escolaridade: string;
   curso: string;
+}
 
-  escola: SchoolDataType;
-};
-
-export interface Managers extends Worker {
+export interface Managers extends Employee {
   cargo: string;
   portaria: string;
   password: string;
+  escola: SchoolDataType;
 }
 
 export type Address = {
@@ -103,8 +151,21 @@ export type SchoolDataType = {
   email: string;
 
   endereco: Address;
-  diretorResponsavel?: Managers | null;
+  diretorResponsavel?: { id: string; cpf: string } | Managers | null;
   professores?: string[];
+};
+
+export type SchoolStructureType = {
+  escola: SchoolDataType;
+  predioProprio: boolean;
+  qtdSalas: number;
+  salasImprovisadas: boolean;
+  qtdSalasImprovisadas: number;
+  horarios: string[];
+  diretor: Managers;
+  // turmas:
+  // professores:
+  // financeiro:
 };
 
 export type IBGE_UF_DataType = {

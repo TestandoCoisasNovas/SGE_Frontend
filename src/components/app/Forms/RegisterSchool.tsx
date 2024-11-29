@@ -1,11 +1,12 @@
 import Button from "@/components/utils/Button";
 import { Address, Endpoint, Methods, SchoolDataType, StatusResponse } from "@/types/types";
 import { useEffect, useState } from "react";
-import AddressForm from "./AddressForm";
+import AddressForm from "../FormsTemplates/AddressForm";
 import { useDataBase } from "@/context/DB_DataContext";
 import Loading from "@/components/utils/Loading";
 import ConfirmationStatus from "@/components/utils/ConfirmationStatus";
 import { InitialAddressData, InitialSchoolData } from "@/types/constValues";
+import SchoolForm from "../FormsTemplates/SchoolForm";
 
 export default function RegisterSchool() {
   const { handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
@@ -98,76 +99,11 @@ export default function RegisterSchool() {
           <h1 className="text-xl font-bold">INSIRA OS DADOS DA ESCOLA ABAIXO</h1>
           {/* SCHOOL DATA SECTION */}
           <div className="flex flex-wrap items-center justify-center">
-            <div className="flex flex-col p-2">
-              <label>Nome</label>
-              <input
-                type="text"
-                name="nomeEscola"
-                value={SchoolFormData.nomeEscola}
-                onChange={handleChangeSchoolData}
-                required
-              />
-            </div>
-            <div className="flex flex-col p-2">
-              <label>CNPJ</label>
-              <input
-                type="text"
-                name="cnpj"
-                value={SchoolFormData.cnpjEscola}
-                onChange={handleChangeSchoolData}
-                minLength={18}
-                maxLength={18}
-                required
-              />
-            </div>
-            <div className="flex flex-col p-2">
-              <label>INEP</label>
-              <input
-                type="text"
-                name="inep"
-                value={SchoolFormData.inep}
-                onChange={handleChangeSchoolData}
-                minLength={8}
-                maxLength={8}
-                required
-              />
-            </div>
-            <div className="flex flex-col p-2">
-              <label>Situação</label>
-              <select name="situacao" value={SchoolFormData.situacao} onChange={handleChangeSchoolData} required>
-                <option hidden disabled value="">
-                  Selecione uma Opção
-                </option>
-                <option value="Ativo">Ativo</option>
-                <option value="Inativo">Inativo</option>
-              </select>
-            </div>
-            <div className="flex flex-col p-2">
-              <label>Telefone</label>
-              <input
-                type="string"
-                name="telefone"
-                value={SchoolFormData.telefone}
-                onChange={handleChangeSchoolData}
-                minLength={15}
-                maxLength={15}
-                required
-              />
-            </div>
-            <div className="flex flex-col p-2">
-              <label>E-mail</label>
-              <input
-                type="email"
-                name="email"
-                value={SchoolFormData.email}
-                onChange={handleChangeSchoolData}
-                required
-              />
-            </div>
+            <SchoolForm schoolData={SchoolFormData} handleSchoolData={handleChangeSchoolData} />
           </div>
 
           {/* ADDRESS DATA SECTION */}
-          <AddressForm AddressFormData={SchoolAddress} handleAddressFormData={handleSchoolAddressFormData} />
+          <AddressForm addressData={SchoolAddress} handleAddressData={handleSchoolAddressFormData} />
         </fieldset>
 
         <div>

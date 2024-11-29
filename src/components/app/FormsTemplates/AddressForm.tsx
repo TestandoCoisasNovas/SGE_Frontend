@@ -2,11 +2,11 @@ import { useUFSData } from "@/context/IBGE_DataContext";
 import { Address } from "@/types/types";
 
 interface AddressFormInterface {
-  AddressFormData: Address;
-  handleAddressFormData: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
+  addressData: Address;
+  handleAddressData: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export default function AddressForm({ AddressFormData, handleAddressFormData }: AddressFormInterface) {
+export default function AddressForm({ addressData, handleAddressData }: AddressFormInterface) {
   const { UFSData, selectedUFCities, setSelectedUF } = useUFSData();
 
   return (
@@ -16,31 +16,31 @@ export default function AddressForm({ AddressFormData, handleAddressFormData }: 
         {/* ADDRESS SECTION */}
         <div className="flex flex-col p-2">
           <label>Logradouro</label>
-          <input type="string" name="rua" value={AddressFormData.rua} onChange={handleAddressFormData} required />
+          <input type="string" name="rua" value={addressData.rua} onChange={handleAddressData} required />
         </div>
         <div className="flex flex-col p-2">
           <label>Número</label>
-          <input type="string" name="numero" value={AddressFormData.numero} onChange={handleAddressFormData} required />
+          <input type="string" name="numero" value={addressData.numero} onChange={handleAddressData} required />
         </div>
         <div className="flex flex-col p-2">
           <label>Bairro</label>
-          <input type="string" name="bairro" value={AddressFormData.bairro} onChange={handleAddressFormData} required />
+          <input type="string" name="bairro" value={addressData.bairro} onChange={handleAddressData} required />
         </div>
         <div className="flex flex-col p-2">
           <label>Ponto de Referência</label>
-          <input type="string" name="referencia" value={AddressFormData.referencia} onChange={handleAddressFormData} />
+          <input type="string" name="referencia" value={addressData.referencia} onChange={handleAddressData} />
         </div>
         <div className="flex flex-col p-2">
           <label>Estado</label>
           <select
             name="estado"
-            value={AddressFormData.estado}
+            value={addressData.estado}
             onChange={(e) => {
               const selectedOption = UFSData?.find((uf) => uf.nome === e.target.value);
               if (selectedOption) {
                 setSelectedUF(selectedOption.sigla);
               }
-              handleAddressFormData(e);
+              handleAddressData(e);
             }}
           >
             <option hidden disabled value="">
@@ -60,8 +60,8 @@ export default function AddressForm({ AddressFormData, handleAddressFormData }: 
           <select
             name="cidade"
             className="max-w-52"
-            value={AddressFormData.cidade}
-            onChange={handleAddressFormData}
+            value={addressData.cidade}
+            onChange={handleAddressData}
             disabled={selectedUFCities?.length ? false : true}
             required
           >
@@ -77,8 +77,8 @@ export default function AddressForm({ AddressFormData, handleAddressFormData }: 
           <label>Tipo de Localidade</label>
           <select
             name="zonaResidencial"
-            value={AddressFormData.zonaResidencial}
-            onChange={handleAddressFormData}
+            value={addressData.zonaResidencial}
+            onChange={handleAddressData}
             required
           >
             <option hidden disabled value="">
