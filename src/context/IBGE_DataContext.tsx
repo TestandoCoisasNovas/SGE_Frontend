@@ -7,19 +7,19 @@ type UFsDataContextType = {
   selectedUFCities: IBGE_CITIES_DataType[] | null;
 };
 
-// contexto criado
+// Context Created
 export const UFsDataContext = createContext<UFsDataContextType>({
   UFSData: null,
   setSelectedUF: () => null,
   selectedUFCities: null,
 });
 
-// usar o contexto criado
+// useContext Created
 export const useUFSData = () => {
   return useContext(UFsDataContext);
 };
 
-// react func do context
+// CONTEXT REACT FUNCTION
 export function UFsDataContextProvider(props: React.PropsWithChildren) {
   const [UFSData, setUFSData] = useState<IBGE_UF_DataType[] | null>(null);
   const [selectedUF, setSelectedUF] = useState<string | null>(null);

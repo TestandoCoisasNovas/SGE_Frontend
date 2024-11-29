@@ -2,7 +2,7 @@ import { Managers, Methods, SchoolDataType, StatusResponse } from "@/types/types
 import React, { createContext, useContext, useState, useEffect } from "react";
 import test from "@/context/test.json";
 
-// CONTEXT CREATED
+// Context Created
 type DataBaseContextType = {
   handleSubmitDataBase: (infos: SchoolDataType | Managers, methodSelection: Methods, endpoint: string) => void;
   infosGET: SchoolDataType[] | null;
@@ -21,7 +21,7 @@ export const DataBaseContext = createContext<DataBaseContextType>({
   setIsDataSended: () => undefined,
 });
 
-// useContext CREATED
+// useContext Created
 export const useDataBase = () => {
   return useContext(DataBaseContext);
 };
@@ -33,10 +33,9 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
 
   useEffect(() => {
-    // GET - INSERIR O LOCALHOST AQUI EM FETCH
-    fetch(`http://281-103-756.local:8080/escola/get`, {
+    // GET - INSERIR O LOCALHOST EM FETCH DENTRO DOS ` `
+    fetch(`http://localhost:8080/escola/get`, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((data: SchoolDataType[]) => {

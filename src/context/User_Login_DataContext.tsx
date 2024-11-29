@@ -1,7 +1,7 @@
 import { Methods, StatusResponse, User_Login_DataType } from "@/types/types";
 import React, { createContext, useContext, useState } from "react";
 
-// CONTEXT CREATED
+// Context Created
 type UserLoginContextType = {
   handleSubmitUserLogin: (infos: User_Login_DataType, methodSelection: Methods) => void;
   responseCode: number;
@@ -14,7 +14,7 @@ export const UserLoginContext = createContext<UserLoginContextType>({
   setResponseCode: () => null,
 });
 
-// useContext CREATED
+// useContext Created
 export const useUserLoginData = () => {
   return useContext(UserLoginContext);
 };
@@ -24,7 +24,7 @@ export function UserLoginContextProvider(props: React.PropsWithChildren) {
   const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
   // const [responseData, setResponseData] = useState()
 
-  // CONST FUNC TO GENERATE HASH SHA-256
+  // ConstFunc to generate Hash SHA-256
   const generateSHA256 = async (messageReceived: string) => {
     const encoder = new TextEncoder();
     const data = encoder.encode(messageReceived);
