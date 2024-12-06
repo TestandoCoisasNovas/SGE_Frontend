@@ -2,11 +2,14 @@
 export enum PageSelector {
   HomePage = "pagina-principal",
   MatriculaInicial = "matricula-inicial",
+  Usuário = "usuario",
+
   Escola = "escola",
   GestorEscolar = "gestor-escolar",
   Remanejamento = "remanejamento",
   Turma = "turma",
   Aluno = "aluno",
+  Funcionário = "funcionario",
   ProfissionalEscolar = "profissional-escolar",
   Migração = "migracao",
 
@@ -38,6 +41,7 @@ export enum StatusResponse {
 export enum Endpoint {
   Escola = "escola",
   Diretor = "diretor",
+  Funcionário = "funcionario"
 }
 
 export enum SubSize {
@@ -61,8 +65,8 @@ export type Individual = {
   endereco: Address;
 
   estadoCivil: string;
-  nomeConjuge: string;
-  foneConjuge: string;
+  nomeConjuge: string | null;
+  foneConjuge: string | null;
 };
 
 // export interface Student extends Individual {

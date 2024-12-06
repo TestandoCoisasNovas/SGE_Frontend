@@ -8,6 +8,7 @@ import Navbar from "@/components/app/Navigation/Navbar";
 import Footer from "@/components/home/Footer";
 import { PageSelector } from "@/types/types";
 import RegisterManager from "@/components/app/Forms/RegisterManagers";
+import RegisterEmployee from "@/components/app/Forms/RegisterEmployee";
 
 export default function DynamicSlugPage() {
   const router = useRouter();
@@ -52,6 +53,12 @@ export default function DynamicSlugPage() {
           return <p>Você está na página de Desbloquear Acesso da Matrícula Inicial - Escola</p>;
         }
       }
+    } else if (pageIdentify?.[0] === PageSelector.Usuário) {
+      if (pageIdentify[1] === PageSelector.Cadastro) {
+        if (pageIdentify[2] === PageSelector.Funcionário) {
+          return <RegisterEmployee />;
+        }
+      }
     } else if (pageIdentify?.[0] === PageSelector.HomePage) {
       return <p> Página Principal </p>;
     }
@@ -66,7 +73,7 @@ export default function DynamicSlugPage() {
         <Navbar />
         <div
           className={twMerge(
-            "flex flex-col m-auto items-center transform transition-all duration-1000 ease-out",
+            "flex flex-col m-auto py-4 items-center transform transition-all duration-1000 ease-out",
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
           )}
         >

@@ -1,83 +1,48 @@
 import { useDataBase } from "@/context/DB_DataContext";
-import { Address, Endpoint, Managers, Methods, StatusResponse } from "@/types/types";
-import AddressForm from "../FormsTemplates/AddressForm";
+import { Endpoint, Managers, Methods, StatusResponse } from "@/types/types";
 import { useState } from "react";
-import { InitialAddressData, InitialManagersData } from "@/types/constValues";
+import { InitialManagersData } from "@/types/constValues";
 import Loading from "@/components/utils/Loading";
 import ConfirmationStatus from "@/components/utils/ConfirmationStatus";
 import Button from "@/components/utils/Button";
 import ManagersForm from "../FormsTemplates/ManagersForm";
 import SchoolSearcher from "../Search/SchoolSearcher";
+import EmployeeSearcher from "../Search/EmployeeSearcher";
 
 export default function RegisterManager() {
-  const { infosGET, handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
+  const { schoolGET, employeeGET, handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
 
   // Admin State and Handler
-  const [ManagerData, setAdminData] = useState<Managers>(InitialManagersData);
-  const [IsSchoolSelected, setIsSchoolSelected] = useState<boolean>(false);
+  const [managerData, setAdminData] = useState<Managers>(InitialManagersData);
 
-  const [isCpfValid, setIsCpfValid] = useState(false);
+  const [isSchoolSelected, setIsSchoolSelected] = useState<boolean>(false);
+  const [isEmployeeSelected, setIsEmployeeSelected] = useState<boolean>(false);
 
   const handleManagerData = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const selectedSchool = infosGET?.find((school) => school.nomeEscola === value);
+    const selectedSchool = schoolGET?.find((school) => school.nomeEscola === value);
+    const selectedEmployee = employeeGET?.find((employee) => employee.nome === value);
 
     if (name === "escola" && selectedSchool) {
       setAdminData({
-        ...ManagerData,
+        ...managerData,
         escola: {
-          id: selectedSchool.id,
-          inep: selectedSchool.inep,
-          nomeEscola: selectedSchool.nomeEscola,
-          cnpjEscola: selectedSchool.cnpjEscola,
-          situacao: selectedSchool.situacao,
-          telefone: selectedSchool.telefone,
-          email: selectedSchool.email,
-          endereco: selectedSchool.endereco,
-          diretorResponsavel: selectedSchool.diretorResponsavel,
-          professores: selectedSchool.professores,
+          ...selectedSchool,
         },
       });
       setIsSchoolSelected(true);
-    }
-    // PHONE Mask
-    else if (name === "telefone") {
+    } else if (name === "funcionario" && selectedEmployee) {
       setAdminData({
-        ...ManagerData,
-        telefone: value
-          .replace(/\D/g, "")
-          .substring(0, 11)
-          .replace(/(^\d{2})(\d)/, "($1) $2")
-          .replace(/(\d{4,5})(\d{4}$)/, "$1-$2"),
+        ...managerData,
+        ...selectedEmployee,
       });
-    }
-    // CPF Mask
-    else if (name === "cpf") {
-      const updatedCpf = value
-        .replace(/\D/g, "")
-        .substring(0, 11)
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-
-      setAdminData({ ...ManagerData, cpf: updatedCpf });
-      setIsCpfValid(updatedCpf.length === 14);
-      return;
+      setIsEmployeeSelected(true);
     } else {
       setAdminData({
-        ...ManagerData,
+        ...managerData,
         [name]: value,
       });
     }
-  };
-
-  // Address State and Handler
-  const [AdminAddress, setAdminAddress] = useState<Address>(InitialAddressData);
-  const handleAdminAddress = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    setAdminAddress({
-      ...AdminAddress,
-      [e.target.name]: e.target.value,
-    });
   };
 
   const generateSHA256 = async (messageReceived: string) => {
@@ -95,29 +60,30 @@ export default function RegisterManager() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!IsSchoolSelected) {
-      alert("Selecione uma Escola! As opções abaixo serão desbloqueadas assim que uma escola selecionada.");
+    if (!isSchoolSelected || !isEmployeeSelected) {
+      alert(
+        "Selecione uma Escola e um funcionário! As opções abaixo serão desbloqueadas assim que uma escola selecionada."
+      );
       return;
-    } else if (!isCpfValid) {
+    } else if (managerData.cpf.length !== 14) {
       alert("CPF inválido! Certifique-se de que ele foi digitado corretamente.");
       return;
     }
 
     // Select only 6 first cpf numbers and generate SHA-256 hash
-    const password = ManagerData.cpf.match(/\d{1,6}/)?.[0] || "";
+    const password = managerData.cpf.match(/\d{1,6}/)?.[0] || "";
     const hashedPassword = await generateSHA256(password);
 
     // Submit Handler for data, with swapped infos
     handleSubmitDataBase(
       {
-        ...ManagerData,
-        endereco: AdminAddress,
+        ...managerData,
         password: hashedPassword,
       },
       Methods.POST,
       Endpoint.Diretor
     );
-    
+
     setResponseCode(StatusResponse.Loading);
   };
 
@@ -129,12 +95,15 @@ export default function RegisterManager() {
           disabled={responseCode === StatusResponse.Loading ? true : false}
         >
           {/* SCHOOL SELECT SECTION */}
-          <SchoolSearcher baseInfo={ManagerData} handler={handleManagerData} infosGET={infosGET} />
+          <SchoolSearcher handler={handleManagerData} schoolGET={schoolGET} />
+          <EmployeeSearcher handler={handleManagerData} employeeGET={employeeGET} />
 
           {/* DIRETOR/SECRETARIO DATA SECTION */}
-          <fieldset className="flex flex-col items-center justify-center gap-10" disabled={!IsSchoolSelected}>
-            <ManagersForm managerData={ManagerData} handleManagerData={handleManagerData} />
-            <AddressForm addressData={AdminAddress} handleAddressData={handleAdminAddress} />
+          <fieldset
+            className="flex flex-col items-center justify-center gap-10"
+            disabled={!isSchoolSelected || !isEmployeeSelected}
+          >
+            <ManagersForm managerData={managerData} handleManagerData={handleManagerData} />
           </fieldset>
         </fieldset>
 

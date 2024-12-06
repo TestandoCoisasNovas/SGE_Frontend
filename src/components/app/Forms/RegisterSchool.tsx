@@ -15,43 +15,10 @@ export default function RegisterSchool() {
   const [SchoolAddress, setSchoolAddress] = useState<Address>(InitialAddressData);
 
   const handleChangeSchoolData = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    // CNPJ Mask
-    if (e.target.name === "cnpj") {
-      setSchoolFormData({
-        ...SchoolFormData,
-        cnpjEscola: e.target.value
-          .replace(/\D/g, "")
-          .replace(/^(\d{2})(\d)/, "$1.$2")
-          .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
-          .replace(/\.(\d{3})(\d)/, ".$1/$2")
-          .replace(/(\d{4})(\d)/, "$1-$2"),
-      });
-    }
-    // INEP Mask
-    else if (e.target.name === "inep") {
-      setSchoolFormData({
-        ...SchoolFormData,
-        inep: e.target.value.replace(/\D/g, ""),
-      });
-    }
-    // PHONE Mask
-    else if (e.target.name === "telefone") {
-      setSchoolFormData({
-        ...SchoolFormData,
-        telefone: e.target.value
-          .replace(/\D/g, "")
-          .substring(0, 11)
-          .replace(/(^\d{2})(\d)/, "($1) $2")
-          .replace(/(\d{4,5})(\d{4}$)/, "$1-$2"),
-      });
-    }
-    // Others
-    else {
-      setSchoolFormData({
-        ...SchoolFormData,
-        [e.target.name]: e.target.value,
-      });
-    }
+    setSchoolFormData({
+      ...SchoolFormData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   // Address Handler
@@ -96,13 +63,7 @@ export default function RegisterSchool() {
           className="flex flex-col items-center justify-center gap-3"
           disabled={responseCode === StatusResponse.Loading ? true : false}
         >
-          <h1 className="text-xl font-bold">INSIRA OS DADOS DA ESCOLA ABAIXO</h1>
-          {/* SCHOOL DATA SECTION */}
-          <div className="flex flex-wrap items-center justify-center">
-            <SchoolForm schoolData={SchoolFormData} handleSchoolData={handleChangeSchoolData} />
-          </div>
-
-          {/* ADDRESS DATA SECTION */}
+          <SchoolForm schoolData={SchoolFormData} handleSchoolData={handleChangeSchoolData} />
           <AddressForm addressData={SchoolAddress} handleAddressData={handleSchoolAddressFormData} />
         </fieldset>
 

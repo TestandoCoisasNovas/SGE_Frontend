@@ -10,7 +10,6 @@ export default function Navbar() {
         <NavbarOption tittle="Escola" reference={PageSelector.MatriculaInicial} icon={true} subSize={SubSize.two}>
           {/* SIZE THREE - ESCOLA → OPÇÕES*/}
           <NavbarOption tittle="Cadastro" reference={PageSelector.Escola} icon={true} subSize={SubSize.three}>
-            {/* INSIDE SIZE THREE - ESCOLA -> CADASTRO -> OPÇÕES*/}
             <NavbarOption
               tittle="Identificação"
               icon={false}
@@ -283,10 +282,15 @@ export default function Navbar() {
       </NavbarOption>
 
       {/* SIZE ONE - USUÁRIO */}
-      <NavbarOption tittle="Usuário" icon={true} subSize={SubSize.one}>
-        {/* SIZE TWO - USUÁRIO → OPÇÕES*/}
-        <NavbarOption tittle="Cadastro" icon={true} subSize={SubSize.three}>
-          {/* INSIDE SIZE TWO - USUÁRIO -> CADASTRO -> OPÇÕES*/}
+      <NavbarOption tittle="Usuário" reference="" icon={true} subSize={SubSize.one}>
+        {/* SIZE TWO - CADASTRO */}
+        <NavbarOption tittle="Cadastro" reference={PageSelector.Usuário} icon={true} subSize={SubSize.two}>
+          <NavbarOption
+            tittle="Funcionário"
+            icon={false}
+            subSize={SubSize.three}
+            href={PageSelector.Usuário + "/" + PageSelector.Cadastro + "/" + PageSelector.Funcionário}
+          />
         </NavbarOption>
       </NavbarOption>
     </nav>
