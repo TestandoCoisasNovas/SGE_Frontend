@@ -116,7 +116,7 @@ export default function IndividualForm({ individualData, handleIndividualData }:
           <input
             type="text"
             name="nomeConjuge"
-            value={individualData.nomeConjuge}
+            value={individualData.nomeConjuge ? individualData.nomeConjuge : ""}
             onChange={handleIndividualData}
             disabled={individualData.estadoCivil !== "Casado"}
             required={individualData.estadoCivil === "Casado"}
@@ -127,7 +127,7 @@ export default function IndividualForm({ individualData, handleIndividualData }:
           <input
             type="text"
             name="foneConjuge"
-            value={individualData.foneConjuge}
+            value={individualData.foneConjuge ? individualData.foneConjuge : ""}
             onChange={handleIndividualData}
             disabled={individualData.estadoCivil !== "Casado"}
             required={individualData.estadoCivil === "Casado"}
