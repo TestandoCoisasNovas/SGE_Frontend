@@ -1,5 +1,5 @@
 import Button from "@/components/utils/Button";
-import { Address, Endpoint, Methods, SchoolDataType, StatusResponse } from "@/types/types";
+import { Address, Endpoint, Methods, School, StatusResponse } from "@/types/types";
 import { useEffect, useState } from "react";
 import AddressForm from "../FormsTemplates/AddressForm";
 import { useDataBase } from "@/context/DB_DataContext";
@@ -11,7 +11,7 @@ import SchoolForm from "../FormsTemplates/SchoolForm";
 export default function RegisterSchool() {
   const { handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
 
-  const [SchoolFormData, setSchoolFormData] = useState<SchoolDataType>(InitialSchoolData);
+  const [SchoolFormData, setSchoolFormData] = useState<School>(InitialSchoolData);
   const [SchoolAddress, setSchoolAddress] = useState<Address>(InitialAddressData);
 
   const handleChangeSchoolData = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {

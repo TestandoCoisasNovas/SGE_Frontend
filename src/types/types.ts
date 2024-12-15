@@ -41,7 +41,7 @@ export enum StatusResponse {
 export enum Endpoint {
   Escola = "escola",
   Diretor = "diretor",
-  Funcionário = "funcionario"
+  Funcionário = "funcionario",
 }
 
 export enum SubSize {
@@ -131,7 +131,7 @@ export interface Managers extends Employee {
   cargo: string;
   portaria: string;
   password: string;
-  escola: SchoolDataType;
+  escola: School;
 }
 
 export type Address = {
@@ -145,7 +145,7 @@ export type Address = {
   zonaResidencial: string;
 };
 
-export type SchoolDataType = {
+export type School = {
   id?: string;
   inep: string;
   nomeEscola: string;
@@ -157,20 +157,21 @@ export type SchoolDataType = {
   endereco: Address;
   diretorResponsavel?: { id: string; cpf: string } | Managers | null;
   professores?: string[];
+  funcionario?: Employee[];
 };
 
-export type SchoolStructureType = {
-  escola: SchoolDataType;
-  predioProprio: boolean;
-  qtdSalas: number;
-  salasImprovisadas: boolean;
-  qtdSalasImprovisadas: number;
-  horarios: string[];
-  diretor: Managers;
-  // turmas:
-  // professores:
-  // financeiro:
-};
+// export type SchoolStructure = {
+//   escola: School;
+//   predioProprio: boolean;
+//   qtdSalas: number;
+//   salasImprovisadas: boolean;
+//   qtdSalasImprovisadas: number;
+//   horarios: string[];
+//   diretor: Managers;
+//   // turmas:
+//   // professores:
+//   // financeiro:
+// };
 
 export type IBGE_UF_DataType = {
   id: number;

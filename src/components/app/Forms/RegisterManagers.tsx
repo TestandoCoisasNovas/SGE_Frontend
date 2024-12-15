@@ -96,7 +96,16 @@ export default function RegisterManager() {
         >
           {/* SCHOOL SELECT SECTION */}
           <SchoolSearcher handler={handleManagerData} schoolGET={schoolGET} />
-          <EmployeeSearcher handler={handleManagerData} employeeGET={employeeGET} />
+
+          {/* EMPLOYEE SELECT SECTION */}
+          <fieldset className="flex flex-col items-center justify-center gap-10" disabled={!isSchoolSelected}>
+            <EmployeeSearcher
+              handler={handleManagerData}
+              employeeGET={
+                schoolGET?.find((school) => school.nomeEscola === managerData.escola.nomeEscola)?.funcionario
+              }
+            />
+          </fieldset>
 
           {/* DIRETOR/SECRETARIO DATA SECTION */}
           <fieldset

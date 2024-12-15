@@ -1,16 +1,14 @@
-import { Employee, Managers, Methods, SchoolDataType, StatusResponse } from "@/types/types";
+import { Employee, Managers, Methods, School, StatusResponse } from "@/types/types";
 import React, { createContext, useContext, useState, useEffect } from "react";
-import testSchool from "@/context/TEST_school.json";
-import testEmployee from "@/context/TEST_employee.json";
 
 // Context Created
 type DataBaseContextType = {
   handleSubmitDataBase: (
-    infos: SchoolDataType | Managers | Employee,
+    infos: School | Managers | Employee,
     methodSelection: Methods,
     endpoint: string
   ) => void;
-  schoolGET: SchoolDataType[] | null;
+  schoolGET: School[] | null;
   employeeGET: Employee[] | null;
   responseCode: number;
   setResponseCode: (value: React.SetStateAction<number>) => void;
@@ -35,19 +33,22 @@ export const useDataBase = () => {
 
 // CONTEXT REACT FUNCTION
 export function DataBaseContextProvider(props: React.PropsWithChildren) {
-  const [schoolGET, setSchoolGET] = useState<SchoolDataType[] | null>(testSchool);
-  const [employeeGET, setEmployeeGET] = useState<Employee[] | null>(testEmployee);
+  const [schoolGET, setSchoolGET] = useState<School[] | null>(null);
+  const [employeeGET, setEmployeeGET] = useState<Employee[] | null>(null);
   const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
+
+  // Trocar variável ip entre "localhost" ou "281-103-756.local"
+  const ip = "localhost"
 
   // SCHOOL Fetch GET
   useEffect(() => {
     // GET - INSERIR O LOCALHOST EM FETCH DENTRO DOS ` `
-    fetch(`http://281-103-756.local:8080/escola/get`, {
+    fetch(`http://${ip}:8080/escola/get`, {
       method: "GET",
     })
       .then((res) => res.json())
-      .then((data: SchoolDataType[]) => {
+      .then((data: School[]) => {
         setSchoolGET(data);
       })
       .catch((error) => console.error(error));
@@ -56,7 +57,7 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
   // EMPLOYEE Fetch GET
   useEffect(() => {
     // GET - INSERIR O LOCALHOST EM FETCH DENTRO DOS ` `
-    fetch(`http://281-103-756.local:8080/funcionario/get`, {
+    fetch(`http://${ip}:8080/funcionario/get`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -68,11 +69,11 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
 
   // Primary Handle Submit
   const handleSubmitDataBase = (
-    infos: SchoolDataType | Managers | Employee,
+    infos: School | Managers | Employee,
     methodSelection: Methods,
     endpoint: string
   ) => {
-    fetch(`http://281-103-756.local:8080/${endpoint}`, {
+    fetch(`http://${ip}:8080/${endpoint}`, {
       method: methodSelection,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(infos),

@@ -25,13 +25,19 @@ export default function EmployeeSearcher({ handler, employeeGET }: EmployeeSearc
         <option hidden disabled value="">
           Selecione uma Opção
         </option>
-        {employeeGET?.map((value) => {
-          return (
-            <option key={value.id} value={value.nome}>
-              {value.nome}
-            </option>
-          );
-        })}
+        {employeeGET?.length !== 0 ? (
+          employeeGET?.map((value) => {
+            return (
+              <option key={value.id} value={value.nome}>
+                {value.nome}
+              </option>
+            );
+          })
+        ) : (
+          <option disabled value="null">
+            Nenhum funcionário disponível!
+          </option>
+        )}
       </select>
     </div>
   );

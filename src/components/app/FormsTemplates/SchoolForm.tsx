@@ -1,7 +1,7 @@
-import { SchoolDataType } from "@/types/types";
+import { School } from "@/types/types";
 
 interface SchoolFormInterface {
-  schoolData: SchoolDataType;
+  schoolData: School;
   handleSchoolData: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
