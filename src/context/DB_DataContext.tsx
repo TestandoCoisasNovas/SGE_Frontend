@@ -39,7 +39,7 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
 
   // Trocar variável ip entre "localhost" ou "281-103-756.local"
-  const ip = "localhost"
+  const ip = "281-103-756.local"
 
   // SCHOOL Fetch GET
   useEffect(() => {

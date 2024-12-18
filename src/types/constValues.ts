@@ -64,8 +64,13 @@ export const InitialManagersData = {
   ...InitialEmployeeData,
   cargo: "",
   portaria: "",
-  password: "",
   escola: InitialSchoolData,
+  usuario: {
+    login: "",
+    password: "",
+    perfil: "",
+    status: false,
+  },
 };
 
 // INITIAL SCHOOL STRUCTURE (ESTRUTURA FISICA) DATA

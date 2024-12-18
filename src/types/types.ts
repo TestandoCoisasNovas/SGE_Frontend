@@ -130,8 +130,13 @@ export interface Employee extends Individual {
 export interface Managers extends Employee {
   cargo: string;
   portaria: string;
-  password: string;
   escola: School;
+  usuario: {
+    login: string;
+    password: string;
+    perfil: string;
+    status: boolean;
+  };
 }
 
 export type Address = {
@@ -157,7 +162,7 @@ export type School = {
   endereco: Address;
   diretorResponsavel?: { id: string; cpf: string } | Managers | null;
   professores?: string[];
-  funcionario?: Employee[];
+  funcionarios?: Employee[];
 };
 
 // export type SchoolStructure = {

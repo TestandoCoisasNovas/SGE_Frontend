@@ -12,7 +12,14 @@ export default function ManagersForm({ managerData, handleManagerData }: WorkerF
       <div className="flex flex-wrap items-center justify-center">
         <div className="flex flex-col p-2">
           <label>Cargo Exercido</label>
-          <input type="text" name="cargo" value={managerData.cargo} onChange={handleManagerData} required />
+          <select name="estadoCivil" value={managerData.cargo} onChange={handleManagerData} required>
+            <option hidden disabled value="">
+              Selecione uma Opção
+            </option>
+            <option value="Diretor">Diretor</option>
+            <option value="Secretário">Secretário</option>
+            <option value="Secretário-Adjunto">Separado-Adjunto</option>
+          </select>
         </div>
         <div className="flex flex-col p-2">
           <label>Nº Portaria</label>

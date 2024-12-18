@@ -78,7 +78,12 @@ export default function RegisterManager() {
     handleSubmitDataBase(
       {
         ...managerData,
-        password: hashedPassword,
+        usuario: {
+          login: managerData.cpf,
+          password: hashedPassword,
+          perfil: managerData.cargo,
+          status: false,
+        },
       },
       Methods.POST,
       Endpoint.Diretor
@@ -102,7 +107,7 @@ export default function RegisterManager() {
             <EmployeeSearcher
               handler={handleManagerData}
               employeeGET={
-                schoolGET?.find((school) => school.nomeEscola === managerData.escola.nomeEscola)?.funcionario
+                schoolGET?.find((school) => school.nomeEscola === managerData.escola.nomeEscola)?.funcionarios
               }
             />
           </fieldset>
