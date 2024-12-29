@@ -162,7 +162,7 @@ export type School = {
   endereco: Address;
   diretorResponsavel?: { id: string; cpf: string } | Managers | null;
   professores?: string[];
-  funcionarios?: Employee[];
+  funcionario?: Employee[];
 };
 
 // export type SchoolStructure = {

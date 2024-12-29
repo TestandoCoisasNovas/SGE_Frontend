@@ -107,7 +107,7 @@ export default function RegisterManager() {
             <EmployeeSearcher
               handler={handleManagerData}
               employeeGET={
-                schoolGET?.find((school) => school.nomeEscola === managerData.escola.nomeEscola)?.funcionarios
+                schoolGET?.find((school) => school.nomeEscola === managerData.escola.nomeEscola)?.funcionario
               }
             />
           </fieldset>
