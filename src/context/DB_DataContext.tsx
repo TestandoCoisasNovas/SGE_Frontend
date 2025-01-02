@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 // Context Created
 type DataBaseContextType = {
   handleSubmitDataBase: (
-    infos: School | Managers | Employee,
+    infos: Partial<School | Managers | Employee>,
     methodSelection: Methods,
     endpoint: string
   ) => void;
@@ -39,7 +39,7 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
 
   // Trocar variável ip entre "localhost" ou "281-103-756.local"
-  const ip = "281-103-756.local"
+  const ip = "281-103-756.local";
 
   // SCHOOL Fetch GET
   useEffect(() => {
@@ -68,11 +68,7 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
   }, [responseCode]);
 
   // Primary Handle Submit
-  const handleSubmitDataBase = (
-    infos: School | Managers | Employee,
-    methodSelection: Methods,
-    endpoint: string
-  ) => {
+  const handleSubmitDataBase = (infos: Partial<School | Managers | Employee>, methodSelection: Methods, endpoint: string) => {
     fetch(`http://${ip}:8080/${endpoint}`, {
       method: methodSelection,
       headers: { "Content-Type": "application/json" },

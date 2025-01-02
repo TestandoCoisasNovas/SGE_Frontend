@@ -77,7 +77,9 @@ export default function RegisterManager() {
     // Submit Handler for data, with swapped infos
     handleSubmitDataBase(
       {
-        ...managerData,
+        cpf: managerData.cpf,
+        cargo: managerData.cargo,
+        portaria: managerData.portaria,
         usuario: {
           login: managerData.cpf,
           password: hashedPassword,
@@ -86,7 +88,7 @@ export default function RegisterManager() {
         },
       },
       Methods.POST,
-      Endpoint.Diretor
+      Endpoint.Gestor
     );
 
     setResponseCode(StatusResponse.Loading);

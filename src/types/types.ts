@@ -40,7 +40,7 @@ export enum StatusResponse {
 
 export enum Endpoint {
   Escola = "escola",
-  Diretor = "diretor",
+  Gestor = "diretor/gestor",
   Funcionário = "funcionario",
 }
 

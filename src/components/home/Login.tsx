@@ -46,7 +46,7 @@ export default function Login() {
 
     // Context Send - Handle Submit
     setResponseCode(StatusResponse.Loading);
-    handleSubmitUserLogin(loginFormData, Methods.PUT);
+    handleSubmitUserLogin(loginFormData, Methods.POST);
   };
 
   // Redirect to Dashboard IF SUCCESS LOGGED IN
