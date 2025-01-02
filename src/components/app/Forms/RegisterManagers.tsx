@@ -87,7 +87,7 @@ export default function RegisterManager() {
           status: false,
         },
       },
-      Methods.POST,
+      Methods.PUT,
       Endpoint.Gestor
     );
 
