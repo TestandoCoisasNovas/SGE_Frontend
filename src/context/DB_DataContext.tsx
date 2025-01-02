@@ -84,8 +84,6 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
         setIsDataSended(true);
       })
       .catch((error) => {
-        // setIsDataSended(true); // DELETE IT
-        // setTimeout(() => setResponseCode(200), 1000); // DELETE IT
         console.log(infos);
         console.log(error);
       });

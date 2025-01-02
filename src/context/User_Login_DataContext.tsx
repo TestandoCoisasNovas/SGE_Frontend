@@ -53,7 +53,6 @@ export function UserLoginContextProvider(props: React.PropsWithChildren) {
       setResponseCode(response.status);
       // setResponseData(response.body);
     } catch (error) {
-      // setTimeout(() => setResponseCode(200), 1000); // DELETE IT LATER
       setResponseCode(StatusResponse.Error);
       console.error("Erro durante a requisição:", error);
     }
