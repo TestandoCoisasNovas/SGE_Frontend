@@ -9,10 +9,21 @@ import Footer from "@/components/home/Footer";
 import { PageSelector } from "@/types/types";
 import RegisterManager from "@/components/app/Forms/RegisterManagers";
 import RegisterEmployee from "@/components/app/Forms/RegisterEmployee";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Loading from "@/components/utils/Loading";
 
 export default function DynamicSlugPage() {
   const router = useRouter();
   const pageIdentify = router.query.slug;
+
+  // CHECK USER LOGGED
+  const { user, isLoading } = useUser();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push(PageSelector.LogIn);
+    }
+  }, [user, isLoading, router]);
 
   // SHOWUP ANIMATION
   const [isVisible, setIsVisible] = useState(false);
@@ -23,10 +34,6 @@ export default function DynamicSlugPage() {
     // Clear the Timer after unmount
     return () => clearTimeout(timer);
   }, [router.asPath]);
-
-  if (router.isFallback) {
-    return <div>Carregando...</div>;
-  }
 
   // CONDITIONAL RENDERING PAGES
   const renderContent = () => {
@@ -69,18 +76,25 @@ export default function DynamicSlugPage() {
       <Head>
         <title>SGE Edu</title>
       </Head>
-      <div className="flex flex-1">
-        <Navbar />
-        <div
-          className={twMerge(
-            "flex flex-col m-auto py-4 items-center transform transition-all duration-1000 ease-out",
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
-          )}
-        >
-          {renderContent() ? renderContent() : <ErrorPage />}
-        </div>
-      </div>
-      <Footer />
+
+      {!user || isLoading ? (
+        <Loading width={50} />
+      ) : (
+        <>
+          <div className="flex flex-1">
+            <Navbar />
+            <div
+              className={twMerge(
+                "flex flex-col m-auto py-4 items-center transform transition-all duration-1000 ease-out",
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
+              )}
+            >
+              {renderContent() ? renderContent() : <ErrorPage />}
+            </div>
+          </div>
+          <Footer />
+        </>
+      )}
     </div>
   );
 }

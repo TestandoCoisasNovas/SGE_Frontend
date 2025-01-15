@@ -1,5 +1,9 @@
 /* cSpell:disable */
 export enum PageSelector {
+  LogIn = "/api/auth/login",
+  LogOut = "/api/auth/logout",
+  CompleteRegister = "/completar-cadastro",
+
   HomePage = "pagina-principal",
   MatriculaInicial = "matricula-inicial",
   Usuário = "usuario",

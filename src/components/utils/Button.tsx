@@ -4,6 +4,7 @@ interface ButtonInterface extends React.PropsWithChildren {
   className?: string;
   type: "submit" | "reset" | "button" | undefined;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 export default function Button(props: ButtonInterface) {

@@ -1,6 +1,6 @@
 {
   "name": "sge_frontend",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "14.2.15",
+    "@auth0/nextjs-auth0": "^3.5.0",
+    "next": "^14.2.23",
+    "node-fetch": "^3.3.2",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.4"

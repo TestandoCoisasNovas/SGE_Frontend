@@ -1,39 +1,32 @@
-import Footer from "@/components/home/Footer";
-import Login from "@/components/home/Login";
-import Head from "next/head";
+import CompleteRegister from "@/components/home/CompleteRegister";
+import Loading from "@/components/utils/Loading";
+// import Loading from "@/components/utils/Loading";
+import { PageSelector } from "@/types/types";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { twMerge } from "tailwind-merge";
 
 export default function Home() {
+  const { user, isLoading } = useUser();
   const router = useRouter();
 
-  // SHOWUP ANIMATION
-  const [isVisible, setIsVisible] = useState(false);
-  
+  const [needCompleteRegister, setNeedCompleteRegister] = useState<boolean>(false);
+
   useEffect(() => {
-    setIsVisible(false);
-    const timer = setTimeout(() => setIsVisible(true), 100);
-    // Clear the Timer after unmount
-    return () => clearTimeout(timer);
-  }, [router.asPath]);
+    if (!isLoading && user) {
+      if (user.cpf) {
+        router.push(PageSelector.HomePage);
+      } else {
+        setNeedCompleteRegister(true);
+      }
+    } else if (!isLoading && !user) {
+      router.push(PageSelector.LogIn);
+    }
+  }, [user, isLoading, router]);
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Head>
-        <title>SGE Edu - Login</title>
-      </Head>
-      <div className="flex flex-1">
-        <div
-          className={twMerge(
-            "flex flex-col m-auto items-center transform transition-all duration-1000 ease-out",
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
-          )}
-        >
-          <Login />
-        </div>
-      </div>
-      <Footer />
+      {isLoading || !needCompleteRegister ? <Loading width={50} /> : needCompleteRegister && <CompleteRegister />}
     </div>
   );
 }
