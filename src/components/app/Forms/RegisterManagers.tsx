@@ -45,18 +45,6 @@ export default function RegisterManager() {
     }
   };
 
-  const generateSHA256 = async (messageReceived: string) => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(messageReceived);
-
-    // Create Hash SHA-256
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-
-    // Convert the Hash Created to Hexadecimal string
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -70,22 +58,12 @@ export default function RegisterManager() {
       return;
     }
 
-    // Select only 6 first cpf numbers and generate SHA-256 hash
-    const password = managerData.cpf.match(/\d{1,6}/)?.[0] || "";
-    const hashedPassword = await generateSHA256(password);
-
     // Submit Handler for data, with swapped infos
     handleSubmitDataBase(
       {
         cpf: managerData.cpf,
         cargo: managerData.cargo,
         portaria: managerData.portaria,
-        usuario: {
-          login: managerData.cpf,
-          password: hashedPassword,
-          perfil: managerData.cargo,
-          status: false,
-        },
       },
       Methods.PUT,
       Endpoint.Gestor

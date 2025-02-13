@@ -26,6 +26,9 @@ export enum PageSelector {
   Pesquisar = "pesquisar",
   BloquearAcesso = "bloquear-acesso",
   Desbloquear = "desbloquear",
+
+  MeuPerfil = "meu-perfil",
+  Editar = "editar",
 }
 
 export enum Methods {
@@ -135,12 +138,6 @@ export interface Managers extends Employee {
   cargo: string;
   portaria: string;
   escola: School;
-  usuario: {
-    login: string;
-    password: string;
-    perfil: string;
-    status: boolean;
-  };
 }
 
 export type Address = {
@@ -182,6 +179,7 @@ export type School = {
 //   // financeiro:
 // };
 
+// ----------> IBGE API DATA TYPES
 export type IBGE_UF_DataType = {
   id: number;
   sigla: string;
@@ -196,9 +194,4 @@ export type IBGE_UF_DataType = {
 export type IBGE_CITIES_DataType = {
   id: number;
   nome: string;
-};
-
-export type User_Login_DataType = {
-  cpf: string;
-  password: string;
 };

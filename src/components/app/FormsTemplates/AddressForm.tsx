@@ -41,6 +41,7 @@ export default function AddressForm({ addressData, handleAddressData }: AddressF
               }
               handleAddressData(e);
             }}
+            required
           >
             <option hidden disabled value="">
               Selecione uma Opção
@@ -61,7 +62,7 @@ export default function AddressForm({ addressData, handleAddressData }: AddressF
             className="max-w-52"
             value={addressData.cidade}
             onChange={handleAddressData}
-            disabled={selectedUFCities?.length ? false : true}
+            disabled={!selectedUFCities?.length}
             required
           >
             <option hidden disabled value="">

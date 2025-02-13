@@ -1,5 +1,7 @@
 import { Employee, Managers, Methods, School, StatusResponse } from "@/types/types";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { createContext, useContext, useState, useEffect, SetStateAction, Dispatch, PropsWithChildren } from "react";
+import EmployeeInitial from "@/context/TEST_employee.json";
 
 // Context Created
 type DataBaseContextType = {
@@ -11,9 +13,10 @@ type DataBaseContextType = {
   schoolGET: School[] | null;
   employeeGET: Employee[] | null;
   responseCode: number;
-  setResponseCode: (value: React.SetStateAction<number>) => void;
+  setResponseCode: (value: SetStateAction<number>) => void;
   isDataSended: boolean;
-  setIsDataSended: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsDataSended: Dispatch<SetStateAction<boolean>>;
+  backendUserData: Employee | null;
 };
 
 export const DataBaseContext = createContext<DataBaseContextType>({
@@ -24,6 +27,7 @@ export const DataBaseContext = createContext<DataBaseContextType>({
   setResponseCode: () => null,
   isDataSended: false,
   setIsDataSended: () => undefined,
+  backendUserData: null,
 });
 
 // useContext Created
@@ -32,18 +36,21 @@ export const useDataBase = () => {
 };
 
 // CONTEXT REACT FUNCTION
-export function DataBaseContextProvider(props: React.PropsWithChildren) {
+export function DataBaseContextProvider(props: PropsWithChildren) {
   const [schoolGET, setSchoolGET] = useState<School[] | null>(null);
   const [employeeGET, setEmployeeGET] = useState<Employee[] | null>(null);
+
   const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
+
+  const [backendUserData, setBackendUserData] = useState<Employee | null>(EmployeeInitial);
+  const { user } = useUser();
 
   // Trocar variável ip entre "localhost" ou "281-103-756.local"
   const ip = "281-103-756.local";
 
   // SCHOOL Fetch GET
   useEffect(() => {
-    // GET - INSERIR O LOCALHOST EM FETCH DENTRO DOS ` `
     fetch(`http://${ip}:8080/escola/get`, {
       method: "GET",
     })
@@ -56,7 +63,6 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
 
   // EMPLOYEE Fetch GET
   useEffect(() => {
-    // GET - INSERIR O LOCALHOST EM FETCH DENTRO DOS ` `
     fetch(`http://${ip}:8080/funcionario/get`, {
       method: "GET",
     })
@@ -67,8 +73,26 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
       .catch((error) => console.error(error));
   }, [responseCode]);
 
+  // BACKEND MATCH USER Fetch GET
+  useEffect(() => {
+    if (user?.cpf) {
+      fetch(`http://${ip}:8080/funcionario/get/${user?.cpf}`, {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((data: Employee) => {
+          setBackendUserData(data);
+        })
+        .catch((error) => console.error(error));
+    }
+  }, [user]);
+
   // Primary Handle Submit
-  const handleSubmitDataBase = (infos: Partial<School | Managers | Employee>, methodSelection: Methods, endpoint: string) => {
+  const handleSubmitDataBase = (
+    infos: Partial<School | Managers | Employee>,
+    methodSelection: Methods,
+    endpoint: string
+  ) => {
     fetch(`http://${ip}:8080/${endpoint}`, {
       method: methodSelection,
       headers: { "Content-Type": "application/json" },
@@ -95,6 +119,7 @@ export function DataBaseContextProvider(props: React.PropsWithChildren) {
         setResponseCode,
         isDataSended,
         setIsDataSended,
+        backendUserData,
       }}
     >
       {props.children}

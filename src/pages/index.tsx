@@ -24,9 +24,23 @@ export default function Home() {
     }
   }, [user, isLoading, router]);
 
+  // SHOWUP ANIMATION
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(false);
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    // Clear the Timer after unmount
+    return () => clearTimeout(timer);
+  }, [router.asPath]);
+
   return (
     <div className="flex flex-col min-h-screen">
-      {isLoading || !needCompleteRegister ? <Loading width={50} /> : needCompleteRegister && <CompleteRegister />}
+      {isLoading || !needCompleteRegister ? (
+        <Loading width={50} />
+      ) : (
+        needCompleteRegister && <CompleteRegister isVisible={isVisible} />
+      )}
     </div>
   );
 }

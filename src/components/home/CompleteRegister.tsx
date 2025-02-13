@@ -6,7 +6,11 @@ import { PageSelector } from "@/types/types";
 import { useRouter } from "next/router";
 import { useUpdateUser } from "@/context/UpdateUser_DataContext";
 
-export default function CompleteRegister() {
+interface CompleteRegisterInterface {
+  isVisible?: boolean;
+}
+
+export default function CompleteRegister(props: CompleteRegisterInterface) {
   const { user } = useUser();
   const router = useRouter();
   const { updateUserMetadata } = useUpdateUser();
@@ -48,9 +52,16 @@ export default function CompleteRegister() {
   };
 
   return (
-    <div className="flex m-auto justify-center items-center bg-tertiary max-w-[400px]">
+    <div
+      className={twMerge(
+        "flex m-auto justify-center items-center bg-tertiary max-w-[400px] transform transition-all duration-1000 ease-out",
+        props.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
+      )}
+    >
       <form onSubmit={handleSaveCPF} className="px-8 py-5 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Para finalizar seu cadastro, insira os seguintes dados:</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Para continuar, finalize seu cadastro inserindo os seguintes dados:
+        </h2>
         <div className="mb-4">
           <label className="block text-sm font-medium">CPF</label>
           <input

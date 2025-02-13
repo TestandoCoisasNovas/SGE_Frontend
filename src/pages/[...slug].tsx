@@ -11,6 +11,8 @@ import RegisterManager from "@/components/app/Forms/RegisterManagers";
 import RegisterEmployee from "@/components/app/Forms/RegisterEmployee";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Loading from "@/components/utils/Loading";
+import CompleteRegister from "@/components/home/CompleteRegister";
+import EditUserProfile from "@/components/app/Forms/EditUserProfile";
 
 export default function DynamicSlugPage() {
   const router = useRouter();
@@ -18,10 +20,13 @@ export default function DynamicSlugPage() {
 
   // CHECK USER LOGGED
   const { user, isLoading } = useUser();
+  const [needCompleteRegister, setNeedCompleteRegister] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isLoading && !user) {
       router.push(PageSelector.LogIn);
+    } else if (!isLoading && user && !user.cpf) {
+      setNeedCompleteRegister(true);
     }
   }, [user, isLoading, router]);
 
@@ -66,6 +71,10 @@ export default function DynamicSlugPage() {
           return <RegisterEmployee />;
         }
       }
+    } else if (pageIdentify?.[0] === PageSelector.MeuPerfil) {
+      if (pageIdentify?.[1] === PageSelector.Editar) {
+        return <EditUserProfile />;
+      }
     } else if (pageIdentify?.[0] === PageSelector.HomePage) {
       return <p> Página Principal </p>;
     }
@@ -79,21 +88,27 @@ export default function DynamicSlugPage() {
 
       {!user || isLoading ? (
         <Loading width={50} />
+      ) : !isLoading && needCompleteRegister ? (
+        <CompleteRegister isVisible={isVisible} />
       ) : (
-        <>
-          <div className="flex flex-1">
-            <Navbar />
-            <div
-              className={twMerge(
-                "flex flex-col m-auto py-4 items-center transform transition-all duration-1000 ease-out",
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
-              )}
-            >
-              {renderContent() ? renderContent() : <ErrorPage />}
+        !isLoading &&
+        user &&
+        !needCompleteRegister && (
+          <>
+            <div className="flex flex-1">
+              <Navbar />
+              <div
+                className={twMerge(
+                  "flex flex-col m-auto py-4 items-center transform transition-all duration-1000 ease-out",
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
+                )}
+              >
+                {renderContent() ? renderContent() : <ErrorPage />}
+              </div>
             </div>
-          </div>
-          <Footer />
-        </>
+            <Footer />
+          </>
+        )
       )}
     </div>
   );

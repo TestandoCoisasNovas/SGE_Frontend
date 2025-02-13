@@ -1,9 +1,7 @@
-import { useUser } from "@auth0/nextjs-auth0/client";
 import NavbarOption from "./NavbarOption";
 import { PageSelector, SubSize } from "@/types/types";
 
 export default function Navbar() {
-  const { user } = useUser();
   return (
     <nav className="flex flex-col max-w-[230px] w-full items-start bg-tertiary select-none">
       {/* SIZE ONE - MATRÍCULA */}
@@ -106,18 +104,15 @@ export default function Navbar() {
       </NavbarOption>
 
       {/* SIZE ONE - USUÁRIO LOGADO */}
-      <NavbarOption
-        tittle={user ? JSON.stringify(user?.name).replaceAll('"', "") : "sem usuário"}
-        reference=""
-        icon={true}
-        subSize={SubSize.one}
-      >
+      <NavbarOption tittle={"Meu Perfil"} reference="" icon={true} subSize={SubSize.one}>
         <NavbarOption
-            tittle="Desconectar"
-            icon={false}
-            subSize={SubSize.two}
-            href={PageSelector.LogOut}
-          />
+          tittle="Editar"
+          icon={false}
+          subSize={SubSize.two}
+          reference={"Meu Perfil"}
+          href={PageSelector.MeuPerfil + "/" + PageSelector.Editar}
+        />
+        <NavbarOption tittle="Desconectar" icon={false} subSize={SubSize.two} href={PageSelector.LogOut} />
       </NavbarOption>
     </nav>
   );

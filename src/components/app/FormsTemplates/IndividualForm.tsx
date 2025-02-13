@@ -10,7 +10,7 @@ export default function IndividualForm({ individualData, handleIndividualData }:
   const handleMasks = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const name = e.target.name;
     // PHONE Mask
-    if (name === "telefone") {
+    if (name === "telefone" || name === "foneConjuge") {
       const maskedPhone = e.target.value
         .replace(/\D/g, "")
         .substring(0, 11)

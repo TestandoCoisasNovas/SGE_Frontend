@@ -10,7 +10,7 @@ export default function SchoolForm({ schoolData, handleSchoolData }: SchoolFormI
     const name = e.target.name;
 
     // CNPJ Mask
-    if (e.target.name === "cnpj") {
+    if (e.target.name === "cnpjEscola") {
       const maskedCNPJ = e.target.value
         .replace(/\D/g, "")
         .replace(/^(\d{2})(\d)/, "$1.$2")
@@ -76,7 +76,7 @@ export default function SchoolForm({ schoolData, handleSchoolData }: SchoolFormI
           <label>CNPJ</label>
           <input
             type="text"
-            name="cnpj"
+            name="cnpjEscola"
             value={schoolData.cnpjEscola}
             onChange={handleMasks}
             minLength={18}
