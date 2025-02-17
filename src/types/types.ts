@@ -29,6 +29,7 @@ export enum PageSelector {
 
   MeuPerfil = "meu-perfil",
   Editar = "editar",
+  Preferências = "preferencias",
 }
 
 export enum Methods {

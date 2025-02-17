@@ -26,7 +26,6 @@ export default function ManagersForm({ managerData, handleManagerData }: WorkerF
           <input type="text" name="portaria" value={managerData.portaria} onChange={handleManagerData} required />
         </div>
       </div>
-      <h1 className="opacity-75 animate-pulse">A senha padrão será os 6 primeiros dígitos do CPF!</h1>
     </div>
   );
 }

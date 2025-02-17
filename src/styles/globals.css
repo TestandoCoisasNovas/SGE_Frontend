@@ -3,21 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffe4c4;
-  --foreground: #171717;
-  --secondary: #003fff;
+  /* gray-300 */
+  --background: #d1d5db;
+
+  /* green-600 */
+  --foreground: #057a55;
+
+  /* blue-800 */
+  --secondary: #1e429f;
+
+  /* Personalized Green */
   --tertiary: #50c878;
-  --extraColor: #65a30d;
+
+  /* Extra - Inverted Color */
+  --extraColor: black;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #71797e;
-    --foreground: #ededed;
-    --secondary: #003fff;
-    --tertiary: #355e3b;
-    --extraColor: #65a30d;
-  }
+.dark {
+  /* Personalized */
+  --background: #71797e;
+
+  /* gray-800 */
+  --foreground: #1f2937;
+
+  /* gray-600 */
+  --secondary: #4b5563;
+
+  /* gray-600 */
+  --tertiary: #4b5563;
+
+  /* Extra - Inverted Color */
+  --extraColor: white;
 }
 
 body {
@@ -26,13 +42,19 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer base {
-  input, select, text-area {
-    @apply text-black border-2 border-gray-300 rounded-md p-2 w-full
-    focus:outline-none focus:border-tertiary focus:ring-2 focus:ring-foreground;
+@layer components {
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  select,
+  text-area {
+    @apply text-extraColor border-2 border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:border-secondary
+    focus:ring-2 focus:ring-foreground disabled:bg-background;
   }
   select {
-    @apply h-[44px]
+    @apply h-[44px];
   }
 }
 

@@ -73,7 +73,7 @@ export default function RegisterManager() {
   };
 
   return (
-    <div className="flex px-4" onClick={() => setResponseCode(StatusResponse.Null)}>
+    <div onClick={() => setResponseCode(StatusResponse.Null)}>
       <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
         <fieldset
           className="flex flex-col items-center justify-center gap-10"

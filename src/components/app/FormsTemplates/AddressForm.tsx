@@ -15,19 +15,19 @@ export default function AddressForm({ addressData, handleAddressData }: AddressF
       <div className="flex flex-wrap items-center justify-center">
         <div className="flex flex-col p-2">
           <label>Logradouro</label>
-          <input type="string" name="rua" value={addressData.rua} onChange={handleAddressData} required />
+          <input type="text" name="rua" value={addressData.rua} onChange={handleAddressData} required />
         </div>
         <div className="flex flex-col p-2">
           <label>Número</label>
-          <input type="string" name="numero" value={addressData.numero} onChange={handleAddressData} required />
+          <input type="text" name="numero" value={addressData.numero} onChange={handleAddressData} required />
         </div>
         <div className="flex flex-col p-2">
           <label>Bairro</label>
-          <input type="string" name="bairro" value={addressData.bairro} onChange={handleAddressData} required />
+          <input type="text" name="bairro" value={addressData.bairro} onChange={handleAddressData} required />
         </div>
         <div className="flex flex-col p-2">
           <label>Ponto de Referência</label>
-          <input type="string" name="referencia" value={addressData.referencia} onChange={handleAddressData} />
+          <input type="text" name="referencia" value={addressData.referencia} onChange={handleAddressData} />
         </div>
         <div className="flex flex-col p-2">
           <label>Estado</label>

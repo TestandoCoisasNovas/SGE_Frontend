@@ -109,7 +109,7 @@ export default function SchoolForm({ schoolData, handleSchoolData }: SchoolFormI
         <div className="flex flex-col p-2">
           <label>Telefone</label>
           <input
-            type="string"
+            type="text"
             name="telefone"
             value={schoolData.telefone}
             onChange={handleMasks}

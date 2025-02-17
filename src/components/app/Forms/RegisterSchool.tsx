@@ -57,8 +57,8 @@ export default function RegisterSchool() {
   }, [responseCode]);
 
   return (
-    <div className="flex px-4" onClick={() => setResponseCode(StatusResponse.Null)}>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+    <div onClick={() => setResponseCode(StatusResponse.Null)}>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 md:px-64">
         <fieldset
           className="flex flex-col items-center justify-center gap-3"
           disabled={responseCode === StatusResponse.Loading ? true : false}
@@ -73,7 +73,7 @@ export default function RegisterSchool() {
           ) : responseCode === StatusResponse.Success || responseCode === StatusResponse.Error ? (
             <ConfirmationStatus statusResponse={responseCode} />
           ) : (
-            responseCode === StatusResponse.Null && <Button type="submit">Enviar Dados</Button>
+            responseCode === StatusResponse.Null && <Button type="submit">Cadastrar Escola</Button>
           )}
         </div>
       </form>
