@@ -1,24 +1,27 @@
-// FALTA INSERIR → horarios: string[];
-// // tipoVinculo: string;
+// cspell: disable
+// MISSING → horarios: string[];
 
 import { Employee } from "@/types/types";
+import { Label, TextInput, Select, Datepicker } from "flowbite-react";
 import { useState } from "react";
 
 interface EmployeeFormInterface {
   employeeData: Employee;
   handleEmployeeData: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
+  handleDates: (value: Date | null, name: string) => void;
 }
 
-export default function EmployeeForm({ employeeData, handleEmployeeData }: EmployeeFormInterface) {
-  const [displaySalario, setDisplaySalario] = useState<string>(""); // Only the value to be shown
-  const [displayDiaPagamento, setDisplayDiaPagamento] = useState<string>(""); // Only the value to be shown
+export default function EmployeeForm({ employeeData, handleEmployeeData, handleDates }: EmployeeFormInterface) {
+  const [displaySalario, setDisplaySalario] = useState<string>(""); // Only the value displayed to the user
+  const [displayDiaPagamento, setDisplayDiaPagamento] = useState<string>(""); // Only the value displayed to the user
 
+  // ALL MASKS HANDLE
   const handleMasks = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    const name = e.target.name;
+    const { name, value } = e.target;
 
     // CURRENCY Mask
     if (name === "salario") {
-      const onlyNumericValues = e.target.value.replace(/\D/g, "");
+      const onlyNumericValues = value.replace(/\D/g, "");
       const formattedValue = (Number(onlyNumericValues) / 100).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
@@ -44,51 +47,68 @@ export default function EmployeeForm({ employeeData, handleEmployeeData }: Emplo
         target: {
           ...e.target,
           name,
-          value: e.target.value.toString(),
+          value: value.toString(),
         },
       };
       handleEmployeeData(event as React.ChangeEvent<HTMLInputElement>);
-      setDisplayDiaPagamento(e.target.value);
+      setDisplayDiaPagamento(value);
     }
   };
 
   return (
     <div className="flex flex-col w-full items-center">
-      <h1 className="text-xl font-bold">INSIRA OS DADOS DE FUNCIONÁRIO ABAIXO</h1>
+      <h1 className="text-center text-lg font-bold text-extraColor">INSIRA OS DADOS DE FUNCIONÁRIO ABAIXO</h1>
       <div className="flex flex-wrap items-center justify-center">
         <div className="flex flex-col p-2">
-          <label>Função</label>
-          <input type="text" name="funcao" value={employeeData.funcao} onChange={handleEmployeeData} required />
-        </div>
-        <div className="flex flex-col p-2">
-          <label>Data de Admissão</label>
-          <input
-            type="date"
-            name="dataAdmissao"
-            value={employeeData.dataAdmissao}
+          <Label>Função</Label>
+          <TextInput
+            type="text"
+            name="funcao"
+            placeholder="Função Exercida"
+            value={employeeData.funcao}
             onChange={handleEmployeeData}
             required
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>Carga Horária</label>
-          <input
+          <Label>Data de Admissão</Label>
+          <Datepicker
+            language="pt-BR"
+            labelTodayButton="Hoje"
+            labelClearButton="Limpar"
+            value={new Date(employeeData.dataAdmissao)}
+            onChange={(e) => handleDates(e, "dataAdmissao")}
+            required
+          />
+        </div>
+        <div className="flex flex-col p-2">
+          <Label>Carga Horária</Label>
+          <TextInput
             type="text"
             name="cargaHoraria"
+            placeholder="Carga Horária Semanal"
             value={employeeData.cargaHoraria}
             onChange={handleEmployeeData}
             required
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>Salário</label>
-          <input type="text" name="salario" value={displaySalario} onChange={handleMasks} required />
+          <Label>Salário</Label>
+          <TextInput
+            type="text"
+            name="salario"
+            placeholder="R$ 0,00"
+            value={displaySalario}
+            onChange={handleMasks}
+            required
+          />
         </div>
         <div className="flex flex-col p-2">
-          <label>Dia de Recebimento</label>
-          <input
+          <Label>Dia de Recebimento</Label>
+          <TextInput
             type="number"
             name="dataRecebimento"
+            placeholder="0"
             min={1}
             max={31}
             value={displayDiaPagamento}
@@ -97,19 +117,19 @@ export default function EmployeeForm({ employeeData, handleEmployeeData }: Emplo
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>Tipo de Vinculo</label>
-          <select name="tipoVinculo" value={employeeData.tipoVinculo} onChange={handleEmployeeData} required>
+          <Label>Tipo de Vinculo</Label>
+          <Select name="tipoVinculo" value={employeeData.tipoVinculo} onChange={handleEmployeeData} required>
             <option hidden disabled value="">
               Selecione uma Opção
             </option>
             <option value="Contrato">Contrato</option>
             <option value="Portaria">Portaria</option>
             <option value="Efetivo">Efetivo</option>
-          </select>
+          </Select>
         </div>
         <div className="flex flex-col p-2">
-          <label>Escolaridade</label>
-          <select name="escolaridade" value={employeeData.escolaridade} onChange={handleEmployeeData} required>
+          <Label>Escolaridade</Label>
+          <Select name="escolaridade" value={employeeData.escolaridade} onChange={handleEmployeeData} required>
             <option hidden disabled value="">
               Selecione uma Opção
             </option>
@@ -122,11 +142,18 @@ export default function EmployeeForm({ employeeData, handleEmployeeData }: Emplo
             <option value="Pós-graduação - Especialização">Pós-graduação - Especialização</option>
             <option value="Mestrado">Mestrado</option>
             <option value="Doutorado">Doutorado</option>
-          </select>
+          </Select>
         </div>
         <div className="flex flex-col p-2">
-          <label>Curso</label>
-          <input type="text" name="curso" value={employeeData.curso} onChange={handleEmployeeData} required />
+          <Label>Curso</Label>
+          <TextInput
+            type="text"
+            name="curso"
+            placeholder="Curso do Funcionário"
+            value={employeeData.curso}
+            onChange={handleEmployeeData}
+            required
+          />
         </div>
       </div>
     </div>

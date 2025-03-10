@@ -1,4 +1,5 @@
 import { School } from "@/types/types";
+import { Label, Select, TextInput } from "flowbite-react";
 
 interface SchoolFormInterface {
   schoolData: School;
@@ -66,17 +67,25 @@ export default function SchoolForm({ schoolData, handleSchoolData }: SchoolFormI
 
   return (
     <div className="flex flex-col w-full items-center">
-      <h1 className="text-xl font-bold">INSIRA OS DADOS DA ESCOLA ABAIXO</h1>
+      <h1 className="text-center text-lg font-bold text-extraColor">INSIRA OS DADOS DA ESCOLA</h1>
       <div className="flex flex-wrap items-center justify-center">
         <div className="flex flex-col p-2">
-          <label>Nome</label>
-          <input type="text" name="nomeEscola" value={schoolData.nomeEscola} onChange={handleSchoolData} required />
+          <Label>Nome</Label>
+          <TextInput
+            type="text"
+            name="nomeEscola"
+            placeholder="Nome da Escola"
+            value={schoolData.nomeEscola}
+            onChange={handleSchoolData}
+            required
+          />
         </div>
         <div className="flex flex-col p-2">
-          <label>CNPJ</label>
-          <input
+          <Label>CNPJ</Label>
+          <TextInput
             type="text"
             name="cnpjEscola"
+            placeholder="12.345.678/0001-00"
             value={schoolData.cnpjEscola}
             onChange={handleMasks}
             minLength={18}
@@ -85,10 +94,11 @@ export default function SchoolForm({ schoolData, handleSchoolData }: SchoolFormI
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>INEP</label>
-          <input
+          <Label>INEP</Label>
+          <TextInput
             type="text"
             name="inep"
+            placeholder="00000000"
             value={schoolData.inep}
             onChange={handleMasks}
             minLength={8}
@@ -97,20 +107,21 @@ export default function SchoolForm({ schoolData, handleSchoolData }: SchoolFormI
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>Situação</label>
-          <select name="situacao" value={schoolData.situacao} onChange={handleSchoolData} required>
+          <Label>Situação</Label>
+          <Select name="situacao" value={schoolData.situacao} onChange={handleSchoolData} required>
             <option hidden disabled value="">
               Selecione uma Opção
             </option>
             <option value="Ativo">Ativo</option>
             <option value="Inativo">Inativo</option>
-          </select>
+          </Select>
         </div>
         <div className="flex flex-col p-2">
-          <label>Telefone</label>
-          <input
+          <Label>Telefone</Label>
+          <TextInput
             type="text"
             name="telefone"
+            placeholder="(00) 9 1234-5678"
             value={schoolData.telefone}
             onChange={handleMasks}
             minLength={15}
@@ -119,8 +130,15 @@ export default function SchoolForm({ schoolData, handleSchoolData }: SchoolFormI
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>E-mail</label>
-          <input type="email" name="email" value={schoolData.email} onChange={handleSchoolData} required />
+          <Label>E-mail</Label>
+          <TextInput
+            type="email"
+            name="email"
+            placeholder="email@provedor.com"
+            value={schoolData.email}
+            onChange={handleSchoolData}
+            required
+          />
         </div>
       </div>
     </div>

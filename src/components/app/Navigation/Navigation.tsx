@@ -8,7 +8,6 @@ import { twMerge } from "tailwind-merge";
 
 import { CgLogOut, CgProfile } from "react-icons/cg";
 import { FaCog, FaSchool } from "react-icons/fa";
-import { GiArchiveRegister } from "react-icons/gi";
 import { PiChalkboardTeacherFill } from "react-icons/pi";
 
 export default function Navigation() {
@@ -18,12 +17,10 @@ export default function Navigation() {
 
   // Collapse change text color
   enum collapseSelect {
-    register = "Cadastrar",
     school = "Escola",
     user = "Usuário",
   }
   const [openCollapse, setOpenCollapse] = useState<{ [key: string]: boolean }>({
-    register: false,
     school: false,
     user: false,
   });
@@ -210,70 +207,42 @@ export default function Navigation() {
         <Sidebar.Items>
           <Sidebar.ItemGroup>
             <Sidebar.Collapse
-              icon={GiArchiveRegister}
-              open={openCollapse.register}
-              onClick={() => toggleCollapse("register")}
-              label={collapseSelect.register}
+              icon={FaSchool}
+              open={openCollapse.school}
+              onClick={() => toggleCollapse("school")}
+              label={collapseSelect.school}
               className={twMerge(
-                openCollapse.register ? "text-background dark:text-extraColor" : "text-extraColor dark:text-background"
+                openCollapse.school ? "text-background dark:text-extraColor" : "text-extraColor dark:text-background"
               )}
             >
-              <Sidebar.Collapse
-                icon={FaSchool}
-                open={openCollapse.school}
-                onClick={() => toggleCollapse("school")}
-                label={collapseSelect.school}
-                className={twMerge(
-                  openCollapse.school ? "text-background dark:text-extraColor" : "text-extraColor dark:text-background"
-                )}
-              >
-                <Sidebar.Item
-                  as={Link}
-                  href={PageSelector.Cadastro + "/" + PageSelector.Escola + "/" + PageSelector.Identificação}
-                >
-                  Identificação
-                </Sidebar.Item>
-                <Sidebar.Item
-                  as={Link}
-                  href={PageSelector.Cadastro + "/" + PageSelector.Escola + "/" + PageSelector.Caracterização}
-                >
-                  Caracterização
-                </Sidebar.Item>
-                <Sidebar.Item
-                  as={Link}
-                  href={PageSelector.Cadastro + "/" + PageSelector.Escola + "/" + PageSelector.OrgEscolar}
-                >
-                  Organização Escolar
-                </Sidebar.Item>
-                <Sidebar.Item
-                  as={Link}
-                  href={PageSelector.Cadastro + "/" + PageSelector.Escola + "/" + PageSelector.Administrativo}
-                >
-                  Administrativo
-                </Sidebar.Item>
-                <Sidebar.Item
-                  as={Link}
-                  href={PageSelector.Cadastro + "/" + PageSelector.Escola + "/" + PageSelector.Pesquisar}
-                >
-                  Pesquisar
-                </Sidebar.Item>
-              </Sidebar.Collapse>
-              <Sidebar.Collapse
-                icon={PiChalkboardTeacherFill}
-                open={openCollapse.user}
-                onClick={() => toggleCollapse("user")}
-                label={collapseSelect.user}
-                className={twMerge(
-                  openCollapse.user ? "text-background dark:text-extraColor" : "text-extraColor dark:text-background"
-                )}
-              >
-                <Sidebar.Item
-                  as={Link}
-                  href={PageSelector.Cadastro + "/" + PageSelector.Usuário + "/" + PageSelector.Funcionário}
-                >
-                  Funcionário
-                </Sidebar.Item>
-              </Sidebar.Collapse>
+              <Sidebar.Item as={Link} href={PageSelector.Escola + "/" + PageSelector.Identificação}>
+                Identificação
+              </Sidebar.Item>
+              <Sidebar.Item as={Link} href={PageSelector.Escola + "/" + PageSelector.Caracterização}>
+                Caracterização
+              </Sidebar.Item>
+              <Sidebar.Item as={Link} href={PageSelector.Escola + "/" + PageSelector.OrgEscolar}>
+                Organização Escolar
+              </Sidebar.Item>
+              <Sidebar.Item as={Link} href={PageSelector.Escola + "/" + PageSelector.Administrativo}>
+                Administrativo
+              </Sidebar.Item>
+              <Sidebar.Item as={Link} href={PageSelector.Escola + "/" + PageSelector.Pesquisar_Editar}>
+                Pesquisar / Editar
+              </Sidebar.Item>
+            </Sidebar.Collapse>
+            <Sidebar.Collapse
+              icon={PiChalkboardTeacherFill}
+              open={openCollapse.user}
+              onClick={() => toggleCollapse("user")}
+              label={collapseSelect.user}
+              className={twMerge(
+                openCollapse.user ? "text-background dark:text-extraColor" : "text-extraColor dark:text-background"
+              )}
+            >
+              <Sidebar.Item as={Link} href={PageSelector.Usuário + "/" + PageSelector.Funcionário}>
+                Cadastro de Funcionário
+              </Sidebar.Item>
             </Sidebar.Collapse>
           </Sidebar.ItemGroup>
         </Sidebar.Items>

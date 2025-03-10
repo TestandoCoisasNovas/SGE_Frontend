@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 type UFsDataContextType = {
   UFSData: IBGE_UF_DataType[] | null;
-  setSelectedUF: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedUF: React.Dispatch<React.SetStateAction<IBGE_UF_DataType | null | undefined>>;
   selectedUFCities: IBGE_CITIES_DataType[] | null;
 };
 
@@ -22,7 +22,7 @@ export const useUFSData = () => {
 // CONTEXT REACT FUNCTION
 export function UFsDataContextProvider(props: React.PropsWithChildren) {
   const [UFSData, setUFSData] = useState<IBGE_UF_DataType[] | null>(null);
-  const [selectedUF, setSelectedUF] = useState<string | null>(null);
+  const [selectedUF, setSelectedUF] = useState<IBGE_UF_DataType | null | undefined>(null);
   const [selectedUFCities, setSelectedUFCities] = useState<IBGE_CITIES_DataType[] | null>(null);
 
   useEffect(() => {
@@ -37,9 +37,12 @@ export function UFsDataContextProvider(props: React.PropsWithChildren) {
   }, []);
 
   useEffect(() => {
-    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF ? selectedUF : ""}/municipios`, {
-      method: "GET",
-    })
+    fetch(
+      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF ? selectedUF.sigla : ""}/municipios`,
+      {
+        method: "GET",
+      }
+    )
       .then((res) => res.json())
       .then((data: IBGE_CITIES_DataType[]) => {
         setSelectedUFCities(data);

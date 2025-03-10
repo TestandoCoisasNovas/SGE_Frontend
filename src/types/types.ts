@@ -17,13 +17,12 @@ export enum PageSelector {
   ProfissionalEscolar = "profissional-escolar",
   Migração = "migracao",
 
-  Cadastro = "cadastro",
   Identificação = "identificacao",
   Caracterização = "caracterizacao",
   OrgEscolar = "organizacao-escolar",
   Administrativo = "administrativo",
 
-  Pesquisar = "pesquisar",
+  Pesquisar_Editar = "pesquisar_ou_editar",
   BloquearAcesso = "bloquear-acesso",
   Desbloquear = "desbloquear",
 
@@ -44,12 +43,22 @@ export enum StatusResponse {
   Loading = 0,
   Success = 200,
   Error = 400,
+  OtherError = 999,
 }
 
 export enum Endpoint {
   Escola = "escola",
   Gestor = "diretor/gestor",
   Funcionário = "funcionario",
+  EditarFuncionário = "funcionario/get/",
+}
+
+export enum Description {
+  RegisterEmployee = "Registro de Funcionário",
+  RegisterManager = "Registro de Gestor",
+  RegisterSchool = "Registro de Escola",
+  EditUserProfile = "Edição de dados do Usuário",
+  EditSchoolData = "Edição de informações da Escola",
 }
 
 export enum SubSize {
@@ -58,6 +67,14 @@ export enum SubSize {
   three = 5,
   four = 7,
 }
+
+export type Audit = {
+  id: string;
+  dataHora: string;
+  maquina: string;
+  descricao: string;
+  funcionario: string;
+};
 
 export type Individual = {
   id?: string;
@@ -76,51 +93,6 @@ export type Individual = {
   nomeConjuge: string | null;
   foneConjuge: string | null;
 };
-
-// export interface Student extends Individual {
-//   certidao: Certify;
-//   notas: Nota[];
-//   turma: SchoolClass;
-// }
-// interface Certify {
-//   tipoCertidao: string;
-//   ufCertidao: string;
-//   cidade: string;
-//   cartorio: string;
-//   livro: string;
-//   folha: string;
-//   certidao: string;
-//   dataEmissao: string;
-// }
-
-// interface SchoolClass {
-//   nome: string;
-//   turno: string;
-//   ano: Ano;
-//   alunos: Student[];
-//   professores: Teacher[];
-// }
-// interface Nota {
-//   nota: number;
-//   mesReferencia: string;
-//   aluno: Student;
-//   disciplina: Discipline;
-// }
-// interface Discipline {
-//   descricao: string;
-//   cargaHoraria: number;
-//   notas: Nota[];
-//   professores: Teacher[];
-// }
-// interface Ano {
-//   descricao: string;
-//   turma: SchoolClass;
-// }
-// interface Teacher extends Employee {
-//   escolas: SchoolDataType[];
-//   disciplinas: Discipline[];
-//   turmas: SchoolClass[];
-// }
 
 export interface Employee extends Individual {
   funcao: string;
@@ -166,19 +138,6 @@ export type School = {
   professores?: string[];
   funcionario?: Employee[];
 };
-
-// export type SchoolStructure = {
-//   escola: School;
-//   predioProprio: boolean;
-//   qtdSalas: number;
-//   salasImprovisadas: boolean;
-//   qtdSalasImprovisadas: number;
-//   horarios: string[];
-//   diretor: Managers;
-//   // turmas:
-//   // professores:
-//   // financeiro:
-// };
 
 // ----------> IBGE API DATA TYPES
 export type IBGE_UF_DataType = {

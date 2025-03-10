@@ -42,22 +42,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer components {
-  input[type="text"],
-  input[type="number"],
-  input[type="email"],
-  input[type="password"],
-  input[type="date"],
-  select,
-  text-area {
-    @apply text-extraColor border-2 border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:border-secondary
-    focus:ring-2 focus:ring-foreground disabled:bg-background;
-  }
-  select {
-    @apply h-[44px];
-  }
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;

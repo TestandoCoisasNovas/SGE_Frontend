@@ -1,17 +1,17 @@
 import { useDataBase } from "@/context/DB_DataContext";
-import { Address, Employee, Endpoint, Methods, StatusResponse } from "@/types/types";
+import { Address, Description, Employee, Endpoint, Methods, StatusResponse } from "@/types/types";
 import AddressForm from "../FormsTemplates/AddressForm";
-import { useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { InitialAddressData, InitialEmployeeData } from "@/types/constValues";
-import Loading from "@/components/utils/Loading";
-import ConfirmationStatus from "@/components/utils/ConfirmationStatus";
-import Button from "@/components/utils/Button";
 import SchoolSearcher from "../Search/SchoolSearcher";
 import IndividualForm from "../FormsTemplates/IndividualForm";
 import EmployeeForm from "../FormsTemplates/EmployeeForm";
+import { twMerge } from "tailwind-merge";
+import SendButton from "@/components/utils/SendButton";
 
+// cspell: disable
 export default function RegisterEmployee() {
-  const { schoolGET: infosGET, handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
+  const { schoolGET, handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
 
   // Employee State and Handler
   const [employeeData, setEmployeeData] = useState<Employee>(InitialEmployeeData);
@@ -20,7 +20,7 @@ export default function RegisterEmployee() {
 
   const handleEmployeeData = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const selectedSchool = infosGET?.find((school) => school.nomeEscola === value);
+    const selectedSchool = schoolGET?.find((school) => school.nomeEscola === value);
 
     if (name === "escola" && selectedSchool) {
       setEmployeeData({
@@ -45,7 +45,16 @@ export default function RegisterEmployee() {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Handle Dates
+  const handleDates = (value: Date | null, name: string) => {
+    setEmployeeData({
+      ...employeeData,
+      [name]: value ? value.toString() : "",
+    });
+  };
+
+  // MAIN SUBMIT FUNCTION
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!IsSchoolSelected) {
@@ -65,41 +74,58 @@ export default function RegisterEmployee() {
         foneConjuge: employeeData.estadoCivil !== "Solteiro" ? employeeData.foneConjuge : null,
       },
       Methods.POST,
-      Endpoint.Funcionário
+      Endpoint.Funcionário,
+      Description.RegisterEmployee
     );
 
     setResponseCode(StatusResponse.Loading);
   };
 
+  // RESET DATA WHEN SUCCESS SUBMIT
+  useEffect(() => {
+    if (responseCode === StatusResponse.Success) {
+      setEmployeeData(InitialEmployeeData);
+      setIsSchoolSelected(false);
+    }
+  }, [responseCode]);
+
   return (
-    <div className="flex px-4" onClick={() => setResponseCode(StatusResponse.Null)}>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center bg-foreground rounded-md pb-4 gap-4">
+        <h1
+          className={twMerge(
+            "text-lg font-bold text-extraColor p-3 w-full text-center",
+            "rounded-t-md bg-gray-500 dark:bg-gray-700"
+          )}
+        >
+          CADASTRAR NOVO FUNCIONÁRIO
+        </h1>
         <fieldset
-          className="flex flex-col items-center justify-center gap-10"
+          className="flex flex-col items-center justify-center gap-4 md:px-64"
           disabled={responseCode === StatusResponse.Loading ? true : false}
         >
           {/* SCHOOL SELECT SECTION */}
-          <SchoolSearcher handler={handleEmployeeData} schoolGET={infosGET} />
+          <SchoolSearcher handler={handleEmployeeData} schoolGET={schoolGET} />
 
           {/* DATA SECTION */}
-          <fieldset className="flex flex-col items-center justify-center gap-10" disabled={!IsSchoolSelected}>
-            <IndividualForm individualData={employeeData} handleIndividualData={handleEmployeeData} />
-            <EmployeeForm employeeData={employeeData} handleEmployeeData={handleEmployeeData} />
+          <fieldset className="flex flex-col items-center justify-center gap-4" disabled={!IsSchoolSelected}>
+            <IndividualForm
+              individualData={employeeData}
+              handleIndividualData={handleEmployeeData}
+              handleDates={handleDates}
+            />
+            <EmployeeForm
+              employeeData={employeeData}
+              handleEmployeeData={handleEmployeeData}
+              handleDates={handleDates}
+            />
             <AddressForm addressData={employeeAddress} handleAddressData={handleEmployeeAddress} />
           </fieldset>
         </fieldset>
 
         {/* BUTTON SENDER AND STATUS */}
-        <div>
-          {responseCode === StatusResponse.Loading ? (
-            <Loading width={40} />
-          ) : responseCode === StatusResponse.Success || responseCode === StatusResponse.Error ? (
-            <ConfirmationStatus statusResponse={responseCode} />
-          ) : (
-            responseCode === StatusResponse.Null && <Button type="submit">Enviar Dados</Button>
-          )}
-        </div>
+        <SendButton type="submit">Cadastrar Funcionário</SendButton>
       </form>
-    </div>
+    </>
   );
 }

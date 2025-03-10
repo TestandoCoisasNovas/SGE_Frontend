@@ -20,7 +20,7 @@ export const InitialIndividualData = {
   rg: "",
   nomeMae: "",
   nomePai: "",
-  dataNascimento: "",
+  dataNascimento: new Date().toString(),
   email: "",
 
   endereco: InitialAddressData,
@@ -37,7 +37,7 @@ export const InitialEmployeeData = {
   cargaHoraria: "",
   horarios: [""],
   tipoVinculo: "",
-  dataAdmissao: "",
+  dataAdmissao: new Date().toString(),
   localTrabalho: "",
   salario: 0,
   dataRecebimento: "",

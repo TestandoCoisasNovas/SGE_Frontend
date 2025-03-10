@@ -1,5 +1,6 @@
 import { InitialEmployeeData } from "@/types/constValues";
 import { Employee } from "@/types/types";
+import { Select } from "flowbite-react";
 import { useState } from "react";
 
 interface EmployeeSearcherInterface {
@@ -12,9 +13,10 @@ export default function EmployeeSearcher({ handler, employeeGET }: EmployeeSearc
 
   return (
     <div className="flex flex-col w-full items-center max-w-[500px]">
-      <h1 className="text-xl font-bold">ESCOLHA UMA FUNCIONÁRIO</h1>
-      <select
+      <h1 className="text-lg font-bold text-extraColor">ESCOLHA UMA FUNCIONÁRIO</h1>
+      <Select
         className="text-center"
+        // cspell: disable-next-line
         name="funcionario"
         value={selectedEmployee.nome}
         onChange={(e) => {
@@ -38,7 +40,7 @@ export default function EmployeeSearcher({ handler, employeeGET }: EmployeeSearc
             Nenhum funcionário disponível!
           </option>
         )}
-      </select>
+      </Select>
     </div>
   );
 }

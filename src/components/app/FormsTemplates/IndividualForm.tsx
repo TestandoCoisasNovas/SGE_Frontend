@@ -1,12 +1,15 @@
 import { Individual } from "@/types/types";
+import { Datepicker, Label, Select, TextInput } from "flowbite-react";
 import React from "react";
+// cspell: disable
 
 interface IndividualFormInterface {
   individualData: Individual;
   handleIndividualData: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
+  handleDates: (value: Date | null, name: string) => void;
 }
 
-export default function IndividualForm({ individualData, handleIndividualData }: IndividualFormInterface) {
+export default function IndividualForm({ individualData, handleIndividualData, handleDates }: IndividualFormInterface) {
   const handleMasks = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const name = e.target.name;
     // PHONE Mask
@@ -50,25 +53,47 @@ export default function IndividualForm({ individualData, handleIndividualData }:
 
   return (
     <div className="flex flex-col w-full items-center">
-      <h1 className="text-xl font-bold">INSIRA OS DADOS DA PESSOA</h1>
+      <h1 className="text-center text-lg font-bold text-extraColor">INSIRA OS DADOS DA PESSOA</h1>
       <div className="flex flex-wrap items-center justify-center">
         <div className="flex flex-col p-2">
-          <label>Nome</label>
-          <input type="text" name="nome" value={individualData.nome} onChange={handleIndividualData} required />
+          <Label>Nome</Label>
+          <TextInput
+            type="text"
+            name="nome"
+            placeholder="Seu Nome Completo"
+            value={individualData.nome}
+            onChange={handleIndividualData}
+            required
+          />
         </div>
         <div className="flex flex-col p-2">
-          <label>Telefone</label>
-          <input type="text" name="telefone" value={individualData.telefone} onChange={handleMasks} required />
+          <Label>Telefone</Label>
+          <TextInput
+            type="text"
+            name="telefone"
+            placeholder="(00) 9 1234-5678"
+            value={individualData.telefone}
+            onChange={handleMasks}
+            required
+          />
         </div>
         <div className="flex flex-col p-2">
-          <label>E-mail</label>
-          <input type="email" name="email" value={individualData.email} onChange={handleIndividualData} required />
+          <Label>E-mail</Label>
+          <TextInput
+            type="email"
+            name="email"
+            placeholder="email@provedor.com"
+            value={individualData.email}
+            onChange={handleIndividualData}
+            required
+          />
         </div>
         <div className="flex flex-col p-2">
-          <label>CPF</label>
-          <input
+          <Label>CPF</Label>
+          <TextInput
             type="text"
             name="cpf"
+            placeholder="123.456.789-00"
             value={individualData.cpf}
             onChange={handleMasks}
             minLength={14}
@@ -77,30 +102,51 @@ export default function IndividualForm({ individualData, handleIndividualData }:
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>RG</label>
-          <input type="text" name="rg" value={individualData.rg} onChange={handleIndividualData} required />
-        </div>
-        <div className="flex flex-col p-2">
-          <label>Data de Nascimento</label>
-          <input
-            type="date"
-            name="dataNascimento"
-            value={individualData.dataNascimento}
+          <Label>RG</Label>
+          <TextInput
+            type="text"
+            name="rg"
+            placeholder="Seu RG"
+            value={individualData.rg}
             onChange={handleIndividualData}
             required
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>Nome da Mãe</label>
-          <input type="text" name="nomeMae" value={individualData.nomeMae} onChange={handleIndividualData} required />
+          <Label>Data de Nascimento</Label>
+          <Datepicker
+            language="pt-BR"
+            labelTodayButton="Hoje"
+            labelClearButton="Limpar"
+            value={new Date(individualData.dataNascimento)}
+            onChange={(e) => handleDates(e, "dataNascimento")}
+            required
+          />
         </div>
         <div className="flex flex-col p-2">
-          <label>Nome do Pai</label>
-          <input type="text" name="nomePai" value={individualData.nomePai} onChange={handleIndividualData} />
+          <Label>Nome da Mãe</Label>
+          <TextInput
+            type="text"
+            name="nomeMae"
+            placeholder="Nome da Mãe"
+            value={individualData.nomeMae}
+            onChange={handleIndividualData}
+            required
+          />
         </div>
         <div className="flex flex-col p-2">
-          <label>Estado Civil</label>
-          <select name="estadoCivil" value={individualData.estadoCivil} onChange={handleIndividualData} required>
+          <Label>Nome do Pai</Label>
+          <TextInput
+            type="text"
+            name="nomePai"
+            placeholder="Nome do Pai"
+            value={individualData.nomePai}
+            onChange={handleIndividualData}
+          />
+        </div>
+        <div className="flex flex-col p-2">
+          <Label>Estado Civil</Label>
+          <Select name="estadoCivil" value={individualData.estadoCivil} onChange={handleIndividualData} required>
             <option hidden disabled value="">
               Selecione uma Opção
             </option>
@@ -109,13 +155,14 @@ export default function IndividualForm({ individualData, handleIndividualData }:
             <option value="Separado">Separado</option>
             <option value="Divorciado">Divorciado</option>
             <option value="Viúvo">Viúvo</option>
-          </select>
+          </Select>
         </div>
         <div className="flex flex-col p-2">
-          <label>Nome do Cônjuge</label>
-          <input
+          <Label>Nome do Cônjuge</Label>
+          <TextInput
             type="text"
             name="nomeConjuge"
+            placeholder="Nome do Côjuge"
             value={individualData.nomeConjuge ? individualData.nomeConjuge : ""}
             onChange={handleIndividualData}
             disabled={individualData.estadoCivil !== "Casado"}
@@ -123,10 +170,12 @@ export default function IndividualForm({ individualData, handleIndividualData }:
           />
         </div>
         <div className="flex flex-col p-2">
-          <label>Telefone do Cônjuge</label>
-          <input
+          <Label>Telefone do Cônjuge</Label>
+          <TextInput
             type="text"
+            // cspell: disable-next-line
             name="foneConjuge"
+            placeholder="(00) 9 1234-5678"
             value={individualData.foneConjuge ? individualData.foneConjuge : ""}
             onChange={handleIndividualData}
             disabled={individualData.estadoCivil !== "Casado"}

@@ -1,5 +1,6 @@
 import { InitialSchoolData } from "@/types/constValues";
 import { School } from "@/types/types";
+import { Select } from "flowbite-react";
 import { useState } from "react";
 
 interface SchoolSearcherInterface {
@@ -12,8 +13,8 @@ export default function SchoolSearcher({ handler, schoolGET }: SchoolSearcherInt
 
   return (
     <div className="flex flex-col w-full items-center max-w-[500px]">
-      <h1 className="text-xl font-bold">ESCOLHA UMA ESCOLA</h1>
-      <select
+      <h1 className="text-center text-lg font-bold text-extraColor">ESCOLHA UMA ESCOLA</h1>
+      <Select
         className="text-center"
         name="escola"
         value={selectedSchool.nomeEscola}
@@ -38,7 +39,7 @@ export default function SchoolSearcher({ handler, schoolGET }: SchoolSearcherInt
             Nenhuma escola disponível!
           </option>
         )}
-      </select>
+      </Select>
     </div>
   );
 }

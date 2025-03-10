@@ -1,14 +1,17 @@
 import { Employee, Managers, Methods, School, StatusResponse } from "@/types/types";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { createContext, useContext, useState, useEffect, SetStateAction, Dispatch, PropsWithChildren } from "react";
-import EmployeeInitial from "@/context/TEST_employee.json";
+import EmployeeInitial from "@/context/_TEST_employee.json";
+import { schoolExamples } from "./_TEST_school";
 
+// cspell: disable
 // Context Created
 type DataBaseContextType = {
   handleSubmitDataBase: (
     infos: Partial<School | Managers | Employee>,
     methodSelection: Methods,
-    endpoint: string
+    endpoint: string,
+    description: string
   ) => void;
   schoolGET: School[] | null;
   employeeGET: Employee[] | null;
@@ -37,17 +40,31 @@ export const useDataBase = () => {
 
 // CONTEXT REACT FUNCTION
 export function DataBaseContextProvider(props: PropsWithChildren) {
-  const [schoolGET, setSchoolGET] = useState<School[] | null>(null);
-  const [employeeGET, setEmployeeGET] = useState<Employee[] | null>(null);
+  const [schoolGET, setSchoolGET] = useState<School[] | null>(schoolExamples);
+  const [employeeGET, setEmployeeGET] = useState<Employee[] | null>([EmployeeInitial]);
 
   const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
 
+  const [userLocation, setUserLocation] = useState<number[]>([0, 0]);
+
+  // GET LOCATION PERMISSION
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation([latitude, longitude]);
+      },
+      (error) => console.error("Erro ao obter localização:", error),
+      { enableHighAccuracy: true }
+    );
+  }
+
   const [backendUserData, setBackendUserData] = useState<Employee | null>(EmployeeInitial);
   const { user } = useUser();
 
-  // Trocar variável ip entre "localhost" ou "281-103-756.local"
-  const ip = "281-103-756.local";
+  // Trocar variável ip entre "localhost" ou "282-644-017.local"
+  const ip = "282-644-017.local";
 
   // SCHOOL Fetch GET
   useEffect(() => {
@@ -91,7 +108,8 @@ export function DataBaseContextProvider(props: PropsWithChildren) {
   const handleSubmitDataBase = (
     infos: Partial<School | Managers | Employee>,
     methodSelection: Methods,
-    endpoint: string
+    endpoint: string,
+    description: string
   ) => {
     fetch(`http://${ip}:8080/${endpoint}`, {
       method: methodSelection,
@@ -104,7 +122,24 @@ export function DataBaseContextProvider(props: PropsWithChildren) {
         setIsDataSended(true);
       })
       .catch((error) => {
+        setResponseCode(StatusResponse.OtherError);
         console.log(infos);
+        console.log(error);
+      });
+    fetch(`http://${ip}:8080/auditoria`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        dataHora: new Date(),
+        maquina: userLocation,
+        descricao: description,
+        funcionario: user?.cpf,
+      }),
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
         console.log(error);
       });
   };

@@ -1,13 +1,12 @@
 import { useDataBase } from "@/context/DB_DataContext";
-import { Endpoint, Managers, Methods, StatusResponse } from "@/types/types";
-import { useState } from "react";
+import { Description, Endpoint, Managers, Methods, StatusResponse } from "@/types/types";
+import { useEffect, useState } from "react";
 import { InitialManagersData } from "@/types/constValues";
-import Loading from "@/components/utils/Loading";
-import ConfirmationStatus from "@/components/utils/ConfirmationStatus";
-import Button from "@/components/utils/Button";
 import ManagersForm from "../FormsTemplates/ManagersForm";
 import SchoolSearcher from "../Search/SchoolSearcher";
 import EmployeeSearcher from "../Search/EmployeeSearcher";
+import { twMerge } from "tailwind-merge";
+import SendButton from "@/components/utils/SendButton";
 
 export default function RegisterManager() {
   const { schoolGET, employeeGET, handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
@@ -31,6 +30,7 @@ export default function RegisterManager() {
         },
       });
       setIsSchoolSelected(true);
+      // cspell: disable-next-line
     } else if (name === "funcionario" && selectedEmployee) {
       setAdminData({
         ...managerData,
@@ -50,7 +50,7 @@ export default function RegisterManager() {
 
     if (!isSchoolSelected || !isEmployeeSelected) {
       alert(
-        "Selecione uma Escola e um funcionário! As opções abaixo serão desbloqueadas assim que uma escola selecionada."
+        "Selecione uma Escola e um Funcionário! As opções abaixo serão desbloqueadas assim que uma escola selecionada."
       );
       return;
     } else if (managerData.cpf.length !== 14) {
@@ -66,17 +66,35 @@ export default function RegisterManager() {
         portaria: managerData.portaria,
       },
       Methods.PUT,
-      Endpoint.Gestor
+      Endpoint.Gestor,
+      Description.RegisterManager
     );
 
     setResponseCode(StatusResponse.Loading);
   };
 
+  // RESET DATA WHEN SUCCESS SUBMIT
+  useEffect(() => {
+    if (responseCode === StatusResponse.Success) {
+      setAdminData(InitialManagersData);
+      setIsSchoolSelected(false);
+      setIsEmployeeSelected(false);
+    }
+  }, [responseCode]);
+
   return (
-    <div onClick={() => setResponseCode(StatusResponse.Null)}>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center bg-foreground rounded-md pb-4 gap-4">
+        <h1
+          className={twMerge(
+            "text-lg font-bold text-extraColor p-3 w-full text-center",
+            "rounded-t-md bg-gray-500 dark:bg-gray-700"
+          )}
+        >
+          CADASTRAR NOVO ADMINISTRADOR
+        </h1>
         <fieldset
-          className="flex flex-col items-center justify-center gap-10"
+          className="flex flex-col gap-10"
           disabled={responseCode === StatusResponse.Loading ? true : false}
         >
           {/* SCHOOL SELECT SECTION */}
@@ -87,6 +105,7 @@ export default function RegisterManager() {
             <EmployeeSearcher
               handler={handleManagerData}
               employeeGET={
+                // cspell: disable-next-line
                 schoolGET?.find((school) => school.nomeEscola === managerData.escola.nomeEscola)?.funcionario
               }
             />
@@ -102,16 +121,8 @@ export default function RegisterManager() {
         </fieldset>
 
         {/* BUTTON SENDER AND STATUS */}
-        <div>
-          {responseCode === StatusResponse.Loading ? (
-            <Loading width={40} />
-          ) : responseCode === StatusResponse.Success || responseCode === StatusResponse.Error ? (
-            <ConfirmationStatus statusResponse={responseCode} />
-          ) : (
-            responseCode === StatusResponse.Null && <Button type="submit">Enviar Dados</Button>
-          )}
-        </div>
+        <SendButton type="submit">Cadastrar Administrador</SendButton>
       </form>
-    </div>
+    </>
   );
 }

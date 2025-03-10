@@ -1,12 +1,11 @@
-import Button from "@/components/utils/Button";
-import { Address, Endpoint, Methods, School, StatusResponse } from "@/types/types";
+import { Address, Description, Endpoint, Methods, School, StatusResponse } from "@/types/types";
 import { useEffect, useState } from "react";
 import AddressForm from "../FormsTemplates/AddressForm";
 import { useDataBase } from "@/context/DB_DataContext";
-import Loading from "@/components/utils/Loading";
-import ConfirmationStatus from "@/components/utils/ConfirmationStatus";
 import { InitialAddressData, InitialSchoolData } from "@/types/constValues";
 import SchoolForm from "../FormsTemplates/SchoolForm";
+import { twMerge } from "tailwind-merge";
+import SendButton from "@/components/utils/SendButton";
 
 export default function RegisterSchool() {
   const { handleSubmitDataBase, responseCode, setResponseCode } = useDataBase();
@@ -37,46 +36,45 @@ export default function RegisterSchool() {
     handleSubmitDataBase(
       {
         ...SchoolFormData,
+        // cspell: disable-next-line
         endereco: SchoolAddress,
       },
       Methods.POST,
-      Endpoint.Escola
+      Endpoint.Escola,
+      Description.RegisterSchool
     );
     setResponseCode(StatusResponse.Loading);
   };
 
+  // RESET DATA WHEN SUCCESS SUBMIT
   useEffect(() => {
     if (responseCode === StatusResponse.Success) {
       setSchoolFormData(InitialSchoolData);
       setSchoolAddress(InitialAddressData);
-      setTimeout(() => {
-        setResponseCode(StatusResponse.Null);
-      }, 5000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responseCode]);
 
   return (
-    <div onClick={() => setResponseCode(StatusResponse.Null)}>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 md:px-64">
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center bg-foreground rounded-md pb-4 gap-4">
+        <h1
+          className={twMerge(
+            "text-lg font-bold text-extraColor p-3 w-full text-center",
+            "rounded-t-md bg-gray-500 dark:bg-gray-700"
+          )}
+        >
+          CADASTRAR NOVA ESCOLA
+        </h1>
         <fieldset
-          className="flex flex-col items-center justify-center gap-3"
+          className="flex flex-col items-center justify-center gap-4 lg:px-64"
           disabled={responseCode === StatusResponse.Loading ? true : false}
         >
           <SchoolForm schoolData={SchoolFormData} handleSchoolData={handleChangeSchoolData} />
           <AddressForm addressData={SchoolAddress} handleAddressData={handleSchoolAddressFormData} />
         </fieldset>
 
-        <div>
-          {responseCode === StatusResponse.Loading ? (
-            <Loading width={40} />
-          ) : responseCode === StatusResponse.Success || responseCode === StatusResponse.Error ? (
-            <ConfirmationStatus statusResponse={responseCode} />
-          ) : (
-            responseCode === StatusResponse.Null && <Button type="submit">Cadastrar Escola</Button>
-          )}
-        </div>
+        <SendButton type="submit">Cadastrar Escola</SendButton>
       </form>
-    </div>
+    </>
   );
 }
