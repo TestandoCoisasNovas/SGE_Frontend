@@ -1,8 +1,9 @@
 import { Employee, Managers, Methods, School, StatusResponse } from "@/types/types";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { createContext, useContext, useState, useEffect, SetStateAction, Dispatch, PropsWithChildren } from "react";
-import EmployeeInitial from "@/context/_TEST_employee.json";
-import { schoolExamples } from "./_TEST_school";
+
+// Trocar variável ip entre "localhost" ou "282-644-017.local"
+const ip = "282-644-017.local";
 
 // cspell: disable
 // Context Created
@@ -40,8 +41,8 @@ export const useDataBase = () => {
 
 // CONTEXT REACT FUNCTION
 export function DataBaseContextProvider(props: PropsWithChildren) {
-  const [schoolGET, setSchoolGET] = useState<School[] | null>(schoolExamples);
-  const [employeeGET, setEmployeeGET] = useState<Employee[] | null>([EmployeeInitial]);
+  const [schoolGET, setSchoolGET] = useState<School[] | null>(null);
+  const [employeeGET, setEmployeeGET] = useState<Employee[] | null>(null);
 
   const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
@@ -60,11 +61,8 @@ export function DataBaseContextProvider(props: PropsWithChildren) {
     );
   }
 
-  const [backendUserData, setBackendUserData] = useState<Employee | null>(EmployeeInitial);
+  const [backendUserData, setBackendUserData] = useState<Employee | null>(null);
   const { user } = useUser();
-
-  // Trocar variável ip entre "localhost" ou "282-644-017.local"
-  const ip = "282-644-017.local";
 
   // SCHOOL Fetch GET
   useEffect(() => {
