@@ -24,7 +24,7 @@ export default function DynamicSlugPage() {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push(PageSelector.LogIn);
+      window.location.assign(PageSelector.LogIn);
     } else if (!isLoading && user && !user.cpf) {
       setNeedCompleteRegister(true);
     }
@@ -32,38 +32,33 @@ export default function DynamicSlugPage() {
 
   // CHECK GRANTED GEOLOCATION
   const [geolocationStatus, setGeolocationStatus] = useState<StatusResponse>(StatusResponse.Null);
-  const verifyGeolocationPermission = async () => {
-    try {
-      if (!navigator.permissions) {
-        console.warn("Carregando API de Permissões ou API não disponível neste navegador.");
-        return;
+  useEffect(() => {
+    if (!("permissions" in navigator)) return;
+
+    const mapPermissionToStatus = (state: PermissionState) => {
+      switch (state) {
+        case "granted":
+          return StatusResponse.Success;
+        case "prompt":
+          return StatusResponse.Loading;
+        default:
+          return StatusResponse.Error;
       }
+    };
 
-      const result = await navigator.permissions.query({ name: "geolocation" });
+    const verifyGeolocationPermission = async () => {
+      try {
+        const result = await navigator.permissions.query({ name: "geolocation" });
+        setGeolocationStatus(mapPermissionToStatus(result.state));
 
-      if (result.state === "granted") {
-        setGeolocationStatus(StatusResponse.Success);
-      } else if (result.state === "prompt") {
-        setGeolocationStatus(StatusResponse.Loading);
-      } else {
-        setGeolocationStatus(StatusResponse.Error);
+        result.onchange = () => setGeolocationStatus(mapPermissionToStatus(result.state));
+      } catch (error) {
+        console.error("Erro ao verificar permissão:", error);
       }
+    };
 
-      // Detect if user change permission
-      result.onchange = () => {
-        if (result.state === "granted") {
-          setGeolocationStatus(StatusResponse.Success);
-        } else if (result.state === "prompt") {
-          setGeolocationStatus(StatusResponse.Loading);
-        } else {
-          setGeolocationStatus(StatusResponse.Error);
-        }
-      };
-    } catch (error) {
-      console.error("Erro ao verificar permissão:", error);
-    }
-  };
-  verifyGeolocationPermission();
+    verifyGeolocationPermission();
+  }, []);
 
   // SHOWUP ANIMATION
   const [isVisible, setIsVisible] = useState(false);

@@ -189,7 +189,7 @@ export default function Navigation() {
                 Preferências
               </Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item as={Link} href={PageSelector.LogOut} icon={CgLogOut}>
+              <Dropdown.Item onClick={() => window.location.assign(PageSelector.LogOut)} icon={CgLogOut}>
                 Desconectar
               </Dropdown.Item>
             </Dropdown>

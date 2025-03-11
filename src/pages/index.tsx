@@ -1,20 +1,20 @@
 import Loading from "@/components/utils/Loading";
 import { PageSelector } from "@/types/types";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
   const { user, isLoading } = useUser();
-  const router = useRouter();
+  const routerNavigation = useRouter();
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.push(PageSelector.HomePage);
+      routerNavigation.push("/" + PageSelector.HomePage);
     } else if (!isLoading && !user) {
-      router.push(PageSelector.LogIn);
+      routerNavigation.push(PageSelector.LogIn);
     }
-  }, [user, isLoading, router]);
+  }, [user, isLoading, routerNavigation]);
 
   return (
     <div className="flex flex-col min-h-screen">

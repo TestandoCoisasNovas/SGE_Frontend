@@ -47,19 +47,22 @@ export function DataBaseContextProvider(props: PropsWithChildren) {
   const [responseCode, setResponseCode] = useState<number>(StatusResponse.Null);
   const [isDataSended, setIsDataSended] = useState<boolean>(false);
 
-  const [userLocation, setUserLocation] = useState<number[]>([0, 0]);
-
   // GET LOCATION PERMISSION
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setUserLocation([latitude, longitude]);
-      },
-      (error) => console.error("Erro ao obter localização:", error),
-      { enableHighAccuracy: true }
-    );
-  }
+  const [userLocation, setUserLocation] = useState<number[]>([0, 0]);
+  useEffect(() => {
+    if (!("permissions" in navigator)) return;
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation([latitude, longitude]);
+        },
+        (error) => console.error("Erro ao obter localização:", error),
+        { enableHighAccuracy: true }
+      );
+    }
+  }, []);
 
   const [backendUserData, setBackendUserData] = useState<Employee | null>(null);
   const { user } = useUser();
